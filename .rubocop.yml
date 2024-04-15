@@ -1,0 +1,17 @@
+require:
+  rubocop-rails
+
+AllCops:
+  SuggestExtensions: false
+
+Style/SymbolArray:
+  Enabled: false
+
+Style/Documentation:
+  Enabled: false
+
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
+AllCops:
+  NewCops: enable
