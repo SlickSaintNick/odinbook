@@ -64,8 +64,6 @@ First I'll look at Facebook and get as comprehensive a picture as possible of th
   - **has_many :liked_posts (post_id as liked_post_id)**
 
 - Post
-  -
-
   - datetime:date
   - string:body (this will be html or similar)
   - point:location
