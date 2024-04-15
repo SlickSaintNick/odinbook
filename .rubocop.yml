@@ -1,10 +1,11 @@
 require:
   rubocop-rails
 
-AllCops:
-  SuggestExtensions: false
 
 Style/SymbolArray:
+  Enabled: false
+
+Style/SymbolProc:
   Enabled: false
 
 Style/Documentation:
@@ -13,5 +14,9 @@ Style/Documentation:
 Style/FrozenStringLiteralComment:
   Enabled: false
 
+Style/EmptyMethod:
+  Enabled: false
+
 AllCops:
   NewCops: enable
+  SuggestExtensions: false

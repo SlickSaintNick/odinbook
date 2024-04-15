@@ -11,7 +11,7 @@ Table profiles {
   user_id integer [unique, not null]
   name varchar
   bio varchar
-  role enum
+  role enum [note: 'public', 'admin']
   created_at timestamp
   updated_at timestamp
 }
@@ -30,21 +30,20 @@ Table follows {
 
 Table posts {
   id integer [primary key]
-  title varchar
   body text [note: 'Content of the post']
+  status enum [note: 'public, private, archived']
   user_id integer
-  status enum
   created_at timestamp
   updated_at timestamp
 }
-
+# UP TO HERE
 Table comments {
   id integer [primary key]
   body text [note: 'Content of the comment']
+  status enum
   post_id integer
   comment_reply_id integer [null]
   user_id integer
-  status enum
   created_at timestamp
   updated_at timestamp
 }
