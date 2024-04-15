@@ -24,4 +24,7 @@ class User < ApplicationRecord
 
   has_many :liked_posts, dependent: :destroy, foreign_key: :post_liked_by_user_id, inverse_of: :user_liked_post
   has_many :user_liked_posts, through: :liked_posts
+
+  has_many :liked_comments, dependent: :destroy, foreign_key: :comment_liked_by_user_id, inverse_of: :user_liked_comment
+  has_many :user_liked_comments, through: :liked_comments
 end

@@ -1,3 +1,8 @@
+// Tables set out in 'logical' order:
+// users have profiles, and follow each other
+// users make posts and comments
+// users like posts and comments
+
 Table users {
   id integer [primary key]
   email varchar [unique]
@@ -11,7 +16,7 @@ Table profiles {
   user_id integer [unique, not null]
   name varchar
   bio varchar
-  role enum [note: 'public', 'admin']
+  role enum [note: 'user_profile, admin_profile']
   created_at timestamp
   updated_at timestamp
 }
@@ -20,7 +25,7 @@ Table follows {
   id integer [primary key]
   following_user_id integer [not null]
   followed_user_id integer [not null]
-  status enum [note: 'pending, accepted']
+  status enum [note: 'pending_follow, accepted_follow']
   created_at timestamp
   updated_at timestamp 
   indexes {
@@ -30,17 +35,17 @@ Table follows {
 
 Table posts {
   id integer [primary key]
-  body text [note: 'Content of the post']
-  status enum [note: 'public, private, archived']
+  body varchar
+  status enum [note: 'public_post, private_post, archived_post']
   user_id integer
   created_at timestamp
   updated_at timestamp
 }
-# UP TO HERE
+
 Table comments {
   id integer [primary key]
-  body text [note: 'Content of the comment']
-  status enum
+  body varchar
+  status enum [note: 'public_comment, private_comment, archived_comment']
   post_id integer
   comment_reply_id integer [null]
   user_id integer
@@ -49,39 +54,48 @@ Table comments {
 }
 
 Table liked_posts {
-  liking_user_id integer
-  liked_post_id integer
+  post_liked_by_user_id integer
+  user_liked_post_id integer
   created_at timestamp
   updated_at timestamp
   indexes {
-    (liking_user_id, liked_post_id) [unique]
+    (post_liked_by_user_id, user_liked_post_id) [unique]
   }
 }
 
 Table liked_comments {
-  liking_user_id integer
-  liked_comment_id integer
+  comment_liked_by_user_id integer
+  user_liked_comment_id integer
   created_at timestamp
   updated_at timestamp
   indexes {
-    (liking_user_id, liked_comment_id) [unique]
+    (comment_liked_by_user_id, user_liked_comment_id) [unique]
   }
 }
 
+// A user has one profile
 Ref: users.id - profiles.user_id
 
+// A user follows, and is followed by, many other users
 Ref: users.id < follows.following_user_id
 Ref: users.id < follows.followed_user_id
 
+// A user has many posts
 Ref: posts.user_id > users.id
 
+// Posts have many comments
 Ref: comments.post_id < posts.id
+
+// Comments have many comment replies
+Ref: comments.comment_reply_id < comments.id
+
+// Users have many comments on posts
 Ref: comments.user_id < users.id
 
-Ref: users.id < liked_posts.liking_user_id
-Ref: liked_posts.liked_post_id < posts.id
+// Users have many liked posts; posts are liked by many users
+Ref: users.id < liked_posts.post_liked_by_user_id
+Ref: posts.id < liked_posts.user_liked_post_id
 
-Ref: liked_comments.liked_comment_id < comments.id
-Ref: liked_comments.liking_user_id < users.id
-
-Ref: comments.comment_reply_id < comments.id
+// Users have many liked comments; comments are liked by many users
+Ref: users.id < liked_comments.comment_liked_by_user_id
+Ref: comments.id < liked_comments.user_liked_comment_id

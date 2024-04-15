@@ -14,4 +14,7 @@ class Comment < ApplicationRecord
            foreign_key: 'comment_reply_id',
            dependent: :destroy
   belongs_to :comment_reply, class_name: 'Comment', optional: true
+
+  has_many :liked_comments, dependent: :destroy, foreign_key: :user_liked_comment_id, inverse_of: :comment_liked_by_user
+  has_many :comment_liked_by_users, through: :liked_comments
 end

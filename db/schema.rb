@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_04_15_212022) do
+ActiveRecord::Schema[7.1].define(version: 2024_04_15_220058) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -36,6 +36,16 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_15_212022) do
     t.index ["followed_user_id"], name: "index_follows_on_followed_user_id"
     t.index ["following_user_id", "followed_user_id"], name: "index_follows_on_following_user_id_and_followed_user_id", unique: true
     t.index ["following_user_id"], name: "index_follows_on_following_user_id"
+  end
+
+  create_table "liked_comments", force: :cascade do |t|
+    t.bigint "user_liked_comment_id"
+    t.bigint "comment_liked_by_user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["comment_liked_by_user_id"], name: "index_liked_comments_on_comment_liked_by_user_id"
+    t.index ["user_liked_comment_id", "comment_liked_by_user_id"], name: "idx_on_user_liked_comment_id_comment_liked_by_user__2811a44eb5", unique: true
+    t.index ["user_liked_comment_id"], name: "index_liked_comments_on_user_liked_comment_id"
   end
 
   create_table "liked_posts", force: :cascade do |t|
@@ -84,6 +94,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_15_212022) do
   add_foreign_key "comments", "users"
   add_foreign_key "follows", "users", column: "followed_user_id"
   add_foreign_key "follows", "users", column: "following_user_id"
+  add_foreign_key "liked_comments", "comments", column: "user_liked_comment_id"
+  add_foreign_key "liked_comments", "users", column: "comment_liked_by_user_id"
   add_foreign_key "liked_posts", "posts", column: "user_liked_post_id"
   add_foreign_key "liked_posts", "users", column: "post_liked_by_user_id"
   add_foreign_key "posts", "users"
