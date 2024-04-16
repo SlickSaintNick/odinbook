@@ -203,12 +203,12 @@ Reduce the model drastically to meet the spec. Documented in planning.dbml.
 
 ## Steps
 
-### Core Steps
+### Core Steps from Odin
 
-- Use PostgreSQL for your database from the beginning (not SQLite3), that way your deployment will go much more smoothly.
-- Write your own seeds in the db/seeds.rb file, which gets run if you type $ rake db:seed.
-- Users must sign in to see anything except the sign in page.
-- User sign-in should use the Devise gem. Devise gives you all sorts of helpful methods so you no longer have to write your own user passwords, sessions, and #current_user methods. See the Railscast (which uses Rails 3) for a step-by-step introduction. The docs will be fully current.
+- DONE Use PostgreSQL for your database from the beginning (not SQLite3), that way your deployment will go much more smoothly.
+- DONE Write your own seeds in the db/seeds.rb file, which gets run if you type $ rake db:seed.
+- DONE Users must sign in to see anything except the sign in page.
+- DONE User sign-in should use the Devise gem. Devise gives you all sorts of helpful methods so you no longer have to write your own user passwords, sessions, and #current_user methods. See the Railscast (which uses Rails 3) for a step-by-step introduction. The docs will be fully current.
 - Users can send follow requests to other users.
 - Users can create posts (begin with text only).
 - Users can like posts.
@@ -222,7 +222,38 @@ Reduce the model drastically to meet the spec. Documented in planning.dbml.
 - Deploy your App to a hosting provider.
 - Set up an email provider and start sending real emails.
 
-### Extra credit
+### My steps
+
+- DONE Set up initial Rails project
+- DONE Add Devise
+- DONE Build Database Model
+- DONE Seeds for Database
+- post#index page (home page) - no styling or layout
+  - Form to add a new post (Replace with a button and Turbo Frames later)
+  - DONE Show all posts from current user, and followed users
+    - DONE Author, Content, When, Like count, who has liked, comments, likes for comments
+    - Button to add a comment to a post (takes to new page initially)
+    - Button to like the post
+    - Buttons to like each comment
+  - List of followed users, click on them to view their profile#show
+  - Pending follow requests, button to accept or reject
+  - Replace with Turbo Streams functionality
+- profile#new / #edit - linked from Home page
+  - Create and edit profile including profile picture
+- profile#show
+  - Profile information
+  - Profile photo
+    - Add to model - Gravatar
+  - Posts by that user (and comments and etc)
+  - Button to request follow, if not already following and not that user.
+- profile#index
+  - List of all users, with buttons to send them follow requests
+- Set up mailer for new users - welcome email
+- Test mail using letter_opener Gem
+- Set up email provider for deployment
+- Deploy to fly.io
+
+#### Extra credit
 
 - Make posts also allow images (either just via a URL or, more complicated, by uploading one).
   - For an alternative to using AWS S3 for image storage take a look at this [cloudinary](https://github.com/GoGoCarl/paperclip-cloudinary)
@@ -230,6 +261,63 @@ Reduce the model drastically to meet the spec. Documented in planning.dbml.
 - Make your post able to be either a text OR a photo by using a polymorphic association (so users can still like or comment on it while being none-the-wiser).
 - Style it up nicely! We'll dive into HTML/CSS in the next course.
 
-### My own stretch goal
+#### My own stretch goal
 
 - Add ability to upload audio as a post or a comment (and again polymorphic?)
+
+## Diagrams
+
+### Post structure
+
+```txt
+For timing: it seems to go 30 m, 6 h, 1 d, 1 w, then the date and time e.g. 7 May at 16:21, then date and year e.g. 20 December 2023
+
+--------------------------------------------------
+ _____
+|     | Author name
+| PIC | 1 day · 📢/🔏
+|_____|
+
+Body body body ...
+body body ...
+
+👍9                                    10 comments
+--------------------------------------------------
+      |LIKE|                        |COMMENT|
+--------------------------------------------------
+____
+|PIC| Commenter Name
+|___| Body body body ...          |
+      1 h  Like  Reply          👍
+      ____  
+      |PIC| Replier Name
+      |___| Body body body ...                |
+            30 m  Like  Reply               👍2
+____
+|PIC| Commenter Name
+|___| Body body body ...          |
+      10 m  Like  Reply          👍
+
+  ...
+  
+  ...
+
+____
+|PIC| Comment as Your Name                  📷⏯
+|___| 📷⏯                                   ▶
+```
+
+### New post form structure
+
+```txt
+______
+|     | Author name
+| PIC | Audience: Public / Private (drop-down)
+|_____|
+
+  What's on your mind, Firstname?
+
+  Add to your post      📷⏯
+  
+             Post
+```

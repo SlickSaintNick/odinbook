@@ -1,0 +1,30 @@
+<h1>posts#index</h1>
+
+<div>
+  <h3><%= current_user.profile.name %></h3>
+  <p>What's on your mind, <%= current_user.profile.name %>?<>
+  <%= link_to "New Post", new_post_path %>
+</div>
+
+<div>
+  <% @posts.each do |post| %>
+    
+    <h2><%= post.user.profile.name %></h2>
+    <p><%= post.created_at %>·Status <%= post.status %></p>
+    <br>
+    <p><%= post.body %></p>
+    <p>Likes: <%= post.likers.count %>     ·     <%= post.comments.count %> comments</p>
+    <p>----------- Like · Comment -----------</p>
+    <div>
+      <% post.comments.each do |comment| %>
+        <h3><%= comment.user.profile.name %></h3>
+        <p><%= comment.body %></p>
+        <p>Created at <%= comment.created_at %>> · Like · Reply · <%= comment.likers.count %></p>
+        <p>-------------------------------------------------------</p>
+      <% end %>
+    </div>
+    <p>Comment as <%= current_user.profile.name %> · 📷⏯
+    <p>📷⏯                 ·                ▶</p>
+    <p>====================================================</p>
+  <% end %>
+</div>
