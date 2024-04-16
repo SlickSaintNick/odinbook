@@ -54,13 +54,14 @@ Table comments {
   updated_at timestamp
 }
 
-Table liked_posts {
-  post_liked_by_user_id integer
-  user_liked_post_id integer
+Table likes {
+  likeable_type varchar
+  likeable_id integer
+  user_id integer
   created_at timestamp
   updated_at timestamp
   indexes {
-    (post_liked_by_user_id, user_liked_post_id) [unique]
+    (user_id, likeable_type, likeable_id) [unique]
   }
 }
 

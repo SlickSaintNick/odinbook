@@ -196,26 +196,48 @@ comments.each do |fields|
   Post.find(fields[:post_id]).comments.create!(fields)
 end
 
-# LikedPost.destroy_all
+Like.destroy_all
 
-# liked_posts = [
-#   { id: 1,
-#     post_liked_by_user_id: 1,
-#     user_liked_post_id: 1 },
-#   { id: 2,
-#     post_liked_by_user_id: 2,
-#     user_liked_post_id: 5 },
-#   { id: 3,
-#     post_liked_by_user_id: 2,
-#     user_liked_post_id: 6 },
-#   { id: 4,
-#     post_liked_by_user_id: 3,
-#     user_liked_post_id: 4 },
-#   { id: 5,
-#     post_liked_by_user_id: 3,
-#     user_liked_post_id: 10 }
-# ]
+liked_posts = [
+  { id: 1,
+    user_id: 1,
+    post_id: 1 },
+  { id: 2,
+    user_id: 2,
+    post_id: 5 },
+  { id: 3,
+    user_id: 2,
+    post_id: 6 },
+  { id: 4,
+    user_id: 3,
+    post_id: 4 },
+  { id: 5,
+    user_id: 3,
+    post_id: 10 }
+]
 
-# liked_posts.each do |fields|
-#   Post.find(fields[:user_liked_post_id]).liked_posts.create!(fields)
-# end
+liked_posts.each do |fields|
+  Post.find(fields[:post_id]).likes.create!(id: fields[:id], user_id: fields[:user_id])
+end
+
+liked_comments = [
+  { id: 6,
+    user_id: 1,
+    comment_id: 1 },
+  { id: 7,
+    user_id: 2,
+    comment_id: 4 },
+  { id: 8,
+    user_id: 3,
+    comment_id: 4 },
+  { id: 9,
+    user_id: 4,
+    comment_id: 4 },
+  { id: 10,
+    user_id: 5,
+    comment_id: 10 }
+]
+
+liked_comments.each do |fields|
+  Comment.find(fields[:comment_id]).likes.create!(id: fields[:id], user_id: fields[:user_id])
+end

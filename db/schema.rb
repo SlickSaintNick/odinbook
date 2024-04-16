@@ -10,13 +10,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_04_15_220058) do
+ActiveRecord::Schema[7.1].define(version: 2024_04_16_195841) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "comments", force: :cascade do |t|
     t.string "body", null: false
-    t.integer "status"
+    t.integer "status", default: 0, null: false
     t.bigint "post_id", null: false
     t.bigint "user_id", null: false
     t.bigint "comment_reply_id"
@@ -28,8 +28,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_15_220058) do
   end
 
   create_table "follows", force: :cascade do |t|
-    t.bigint "following_user_id"
-    t.bigint "followed_user_id"
+    t.bigint "following_user_id", null: false
+    t.bigint "followed_user_id", null: false
     t.integer "status", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -38,24 +38,15 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_15_220058) do
     t.index ["following_user_id"], name: "index_follows_on_following_user_id"
   end
 
-  create_table "liked_comments", force: :cascade do |t|
-    t.bigint "user_liked_comment_id"
-    t.bigint "comment_liked_by_user_id"
+  create_table "likes", force: :cascade do |t|
+    t.string "likeable_type", null: false
+    t.bigint "likeable_id", null: false
+    t.bigint "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["comment_liked_by_user_id"], name: "index_liked_comments_on_comment_liked_by_user_id"
-    t.index ["user_liked_comment_id", "comment_liked_by_user_id"], name: "idx_on_user_liked_comment_id_comment_liked_by_user__2811a44eb5", unique: true
-    t.index ["user_liked_comment_id"], name: "index_liked_comments_on_user_liked_comment_id"
-  end
-
-  create_table "liked_posts", force: :cascade do |t|
-    t.bigint "user_liked_post_id"
-    t.bigint "post_liked_by_user_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["post_liked_by_user_id"], name: "index_liked_posts_on_post_liked_by_user_id"
-    t.index ["user_liked_post_id", "post_liked_by_user_id"], name: "idx_on_user_liked_post_id_post_liked_by_user_id_a91299c549", unique: true
-    t.index ["user_liked_post_id"], name: "index_liked_posts_on_user_liked_post_id"
+    t.index ["likeable_id", "likeable_type", "user_id"], name: "index_likes_on_likeable_and_user", unique: true
+    t.index ["likeable_type", "likeable_id"], name: "index_likes_on_likeable"
+    t.index ["user_id"], name: "index_likes_on_user_id"
   end
 
   create_table "posts", force: :cascade do |t|
@@ -68,9 +59,9 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_15_220058) do
   end
 
   create_table "profiles", force: :cascade do |t|
-    t.string "name"
+    t.string "name", null: false
     t.string "bio"
-    t.integer "role", default: 0
+    t.integer "role", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "user_id", null: false
@@ -94,10 +85,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_15_220058) do
   add_foreign_key "comments", "users"
   add_foreign_key "follows", "users", column: "followed_user_id"
   add_foreign_key "follows", "users", column: "following_user_id"
-  add_foreign_key "liked_comments", "comments", column: "user_liked_comment_id"
-  add_foreign_key "liked_comments", "users", column: "comment_liked_by_user_id"
-  add_foreign_key "liked_posts", "posts", column: "user_liked_post_id"
-  add_foreign_key "liked_posts", "users", column: "post_liked_by_user_id"
+  add_foreign_key "likes", "users"
   add_foreign_key "posts", "users"
   add_foreign_key "profiles", "users"
 end
