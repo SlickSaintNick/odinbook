@@ -1,3 +1,4 @@
+// https://dbdiagram.io/d
 // Tables set out in 'logical' order:
 // users have profiles, and follow each other
 // users make posts and comments

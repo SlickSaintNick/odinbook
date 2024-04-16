@@ -215,8 +215,8 @@ Reduce the model drastically to meet the spec. Documented in planning.dbml.
 - Users can comment on posts.
 - Posts should always display the post content, author, comments, and likes.
 - There should be an index page for posts, which shows all the recent posts from the current user and users they are following.
-- Users can create a profile with a profile picture. You may be able to get the profile picture when users sign in using OmniAuth. If this isn’t the case you can use Gravatar to generate the photo.
-- A user’s profile page should contain their profile information, profile photo, and posts.
+- Users can create a profile with a profile picture. You may be able to get the profile picture when users sign in using OmniAuth. If this isn't the case you can use Gravatar to generate the photo.
+- A user's profile page should contain their profile information, profile photo, and posts.
 - There should be an index page for users, which shows all users and buttons for sending follow requests to users the user is not already following or have a pending request.
 - Set up a mailer to send a welcome email when a new user signs up. Use the letter_opener gem (see docs here) to test it in development mode.
 - Deploy your App to a hosting provider.
@@ -228,7 +228,7 @@ Reduce the model drastically to meet the spec. Documented in planning.dbml.
   - For an alternative to using AWS S3 for image storage take a look at this [cloudinary](https://github.com/GoGoCarl/paperclip-cloudinary)
 - Use Active Storage to allow users to upload a photo to their profile.
 - Make your post able to be either a text OR a photo by using a polymorphic association (so users can still like or comment on it while being none-the-wiser).
-- Style it up nicely! We’ll dive into HTML/CSS in the next course.
+- Style it up nicely! We'll dive into HTML/CSS in the next course.
 
 ### My own stretch goal
 
