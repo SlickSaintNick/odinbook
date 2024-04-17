@@ -212,6 +212,7 @@ marge.posts.each do |post|
   post.likes.create!(user_id: homer.id)
 end
 
+<<<<<<< HEAD
 marge.comments.each do |comment|
   comment.likes.create!(user_id: homer.id)
 end

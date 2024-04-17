@@ -207,8 +207,13 @@ Reduce the model drastically to meet the spec. Documented in planning.dbml.
 
 - DONE Use PostgreSQL for your database from the beginning (not SQLite3), that way your deployment will go much more smoothly.
 - DONE Write your own seeds in the db/seeds.rb file, which gets run if you type $ rake db:seed.
+<<<<<<< HEAD
 - DONE Users must sign in to see anything except the sign in page.
 - DONE User sign-in should use the Devise gem. Devise gives you all sorts of helpful methods so you no longer have to write your own user passwords, sessions, and #current_user methods. See the Railscast (which uses Rails 3) for a step-by-step introduction. The docs will be fully current.
+=======
+- Users must sign in to see anything except the sign in page.
+- User sign-in should use the Devise gem. Devise gives you all sorts of helpful methods so you no longer have to write your own user passwords, sessions, and #current_user methods. See the Railscast (which uses Rails 3) for a step-by-step introduction. The docs will be fully current.
+>>>>>>> acd54b0caed9c838c0555aa5ab292fe0e9729ed9
 - Users can send follow requests to other users.
 - Users can create posts (begin with text only).
 - Users can like posts.
