@@ -1,17 +1,34 @@
-User.destroy_all
-
-test_user = User.create!(email: ENV.fetch('TEST_USER_EMAIL_1', nil), password: ENV.fetch('TEST_USER_EMAIL_1', nil))
-homer = User.create!(email: ENV.fetch('TEST_USER_EMAIL_2', nil), password: ENV.fetch('TEST_USER_EMAIL_2', nil))
-marge = User.create!(email: ENV.fetch('TEST_USER_EMAIL_3', nil), password: ENV.fetch('TEST_USER_EMAIL_3', nil))
-bart = User.create!(email: ENV.fetch('TEST_USER_EMAIL_4', nil), password: ENV.fetch('TEST_USER_EMAIL_4', nil))
-monty = User.create!(email: ENV.fetch('TEST_USER_EMAIL_5', nil), password: ENV.fetch('TEST_USER_EMAIL_5', nil))
-
-Rails.logger.info "Created #{User.count} users"
+raise 'You are in production environment - do not re-seed database' if Rails.env.production?
 
 # User has dependent_destroy for all linked tables,
 # however use destroy_all for each table proactively.
 
 # Chat GPT generated content for bios, posts, comments.
+
+# ========= USERS =========
+
+User.destroy_all
+
+logins = [{ email: ENV.fetch('TEST_USER_EMAIL_1'), password: ENV.fetch('TEST_USER_PASSWORD_1') },
+          { email: ENV.fetch('TEST_USER_EMAIL_2'), password: ENV.fetch('TEST_USER_PASSWORD_2') },
+          { email: ENV.fetch('TEST_USER_EMAIL_3'), password: ENV.fetch('TEST_USER_PASSWORD_3') },
+          { email: ENV.fetch('TEST_USER_EMAIL_4'), password: ENV.fetch('TEST_USER_PASSWORD_4') },
+          { email: ENV.fetch('TEST_USER_EMAIL_5'), password: ENV.fetch('TEST_USER_PASSWORD_5') }]
+
+test_user = User.create!(email: logins[0][:email], password: logins[0][:password],
+                         password_confirmation: logins[0][:password])
+homer = User.create!(email: logins[1][:email], password: logins[1][:password],
+                     password_confirmation: logins[1][:password])
+marge = User.create!(email: logins[2][:email], password: logins[2][:password],
+                     password_confirmation: logins[2][:password])
+bart = User.create!(email: logins[3][:email], password: logins[3][:password],
+                    password_confirmation: logins[3][:password])
+monty = User.create!(email: logins[4][:email], password: logins[4][:password],
+                     password_confirmation: logins[4][:password])
+
+Rails.logger.info "Created #{User.count} users"
+
+# ========= PROFILES =========
 
 Profile.destroy_all
 
@@ -38,6 +55,8 @@ monty.profile = Profile.new(
 
 Rails.logger.info "Created #{Profile.count} profiles"
 
+# ========= FOLLOWS =========
+
 Follow.destroy_all
 
 # Test user follows everyone.
@@ -62,6 +81,8 @@ bart.follows.create!(followed_user_id: monty.id, status: 'pending_follow')
 # Monty follows no-one.
 
 Rails.logger.info "Created #{Follow.count} follows"
+
+# ========= POSTS =========
 
 Post.destroy_all
 
@@ -129,6 +150,8 @@ monty.posts.create!(
 )
 
 Rails.logger.info "Created #{Post.count} posts"
+
+# ========= COMMENTS =========
 
 Comment.destroy_all
 
@@ -200,6 +223,8 @@ monty.posts.last.comments.create!(
 )
 
 Rails.logger.info "Created #{Comment.count} comments"
+
+# ========= LIKES =========
 
 Like.destroy_all
 
