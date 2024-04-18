@@ -2,7 +2,7 @@ class PostsController < ApplicationController
   def index
     @posts = Post.where(user: current_user.followed_users)
                  .or(Post.where(user: current_user))
-                 .order(:created_at)
+                 .order(created_at: :desc)
   end
 
   def show

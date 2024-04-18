@@ -207,19 +207,14 @@ Reduce the model drastically to meet the spec. Documented in planning.dbml.
 
 - DONE Use PostgreSQL for your database from the beginning (not SQLite3), that way your deployment will go much more smoothly.
 - DONE Write your own seeds in the db/seeds.rb file, which gets run if you type $ rake db:seed.
-<<<<<<< HEAD
 - DONE Users must sign in to see anything except the sign in page.
 - DONE User sign-in should use the Devise gem. Devise gives you all sorts of helpful methods so you no longer have to write your own user passwords, sessions, and #current_user methods. See the Railscast (which uses Rails 3) for a step-by-step introduction. The docs will be fully current.
-=======
-- Users must sign in to see anything except the sign in page.
-- User sign-in should use the Devise gem. Devise gives you all sorts of helpful methods so you no longer have to write your own user passwords, sessions, and #current_user methods. See the Railscast (which uses Rails 3) for a step-by-step introduction. The docs will be fully current.
->>>>>>> acd54b0caed9c838c0555aa5ab292fe0e9729ed9
-- Users can send follow requests to other users.
-- Users can create posts (begin with text only).
+- DONE Users can create posts (begin with text only).
+- DONE Posts should always display the post content, author, comments, and likes.
+- DONE There should be an index page for posts, which shows all the recent posts from the current user and users they are following.
 - Users can like posts.
 - Users can comment on posts.
-- Posts should always display the post content, author, comments, and likes.
-- There should be an index page for posts, which shows all the recent posts from the current user and users they are following.
+- Users can send follow requests to other users.
 - Users can create a profile with a profile picture. You may be able to get the profile picture when users sign in using OmniAuth. If this isn't the case you can use Gravatar to generate the photo.
 - A user's profile page should contain their profile information, profile photo, and posts.
 - There should be an index page for users, which shows all users and buttons for sending follow requests to users the user is not already following or have a pending request.
@@ -233,13 +228,15 @@ Reduce the model drastically to meet the spec. Documented in planning.dbml.
 - DONE Add Devise
 - DONE Build Database Model
 - DONE Seeds for Database
-- post#index page (home page) - no styling or layout
-  - Form to add a new post (Replace with a button and Turbo Frames later)
+- DONE post#index page (home page) - no styling or layout
+  - DONE Form to add a new post (Replace with a button and Turbo Frames later)
   - DONE Show all posts from current user, and followed users
     - DONE Author, Content, When, Like count, who has liked, comments, likes for comments
-    - Button to add a comment to a post (takes to new page initially)
+    - DONE Button to add a comment to a post (takes to new page initially)
+    - Button to reply to each comment with another comment
     - Button to like the post
     - Buttons to like each comment
+  - **Out of sequence: Add Validations to the Model in post.rb etc**
   - List of followed users, click on them to view their profile#show
   - Pending follow requests, button to accept or reject
   - Replace with Turbo Streams functionality

@@ -2,7 +2,7 @@
 
 <div>
   <h3><%= current_user.profile.name %></h3>
-  <p>What's on your mind, <%= current_user.profile.name %>?<>
+  <p>What's on your mind, <%= current_user.profile.name.split[0] %>?</p>
   <%= link_to "New Post", new_post_path %>
 </div>
 
@@ -14,12 +14,12 @@
     <br>
     <p><%= post.body %></p>
     <p>Likes: <%= post.likers.count %>     ·     <%= post.comments.count %> comments</p>
-    <p>----------- Like · Comment -----------</p>
+    <p>----------- Like · <%= link_to "Comment", new_post_comment_path(post) %> -----------</p>
     <div>
-      <% post.comments.each do |comment| %>
+      <% post.comments.order(created_at: :desc).each do |comment| %>
         <h3><%= comment.user.profile.name %></h3>
         <p><%= comment.body %></p>
-        <p>Created at <%= comment.created_at %>> · Like · Reply · <%= comment.likers.count %></p>
+        <p>Created at <%= comment.created_at %>> · Like · Reply · 👍<%= comment.likers.count %></p>
         <p>-------------------------------------------------------</p>
       <% end %>
     </div>
