@@ -1,5 +1,9 @@
 <div>
-  <h1>New Comment</h1>
+  <% if @comment.comment_reply_id %>
+    <h1>New Reply</h1>
+  <% else %>
+    <h1>New Comment<h1>
+  <% end %>
   <div>
     <%# render form, post: @post, comment: @comment %>
     <%= form_with(model: [@post, @comment], local: true) do |form| %>
@@ -7,6 +11,9 @@
         <%= form.label :body %><br>
         <%= form.text_area :body, rows:"5" %>
       </div>
+      <% if @comment.comment_reply_id %>
+        <%= form.hidden_field :comment_reply_id, value: @comment.comment_reply_id %>
+      <% end %>
       <div>
         <%= form.submit %>
       </div>

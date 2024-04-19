@@ -24,7 +24,7 @@
         <p>
           Created at <%= comment.created_at %> · 
           Like · 
-          <%= link_to "Reply", new_post_comment_path(post, comment) %> · 
+          <%= link_to "Reply", new_post_comment_path(post, reply_to_comment: comment.id) %> · 
           👍<%= comment.likers.count %> 
           <% if comment.user_id == current_user.id %>
              · <%= link_to "Edit", edit_post_comment_path(post, comment) %> · 
@@ -37,7 +37,7 @@
           <p>
             Created at <%= comment_reply.created_at %> · 
             Like · 
-            <%= link_to "Reply", new_post_comment_path(post, comment_reply) %> · 
+            <%= link_to "Reply", new_post_comment_path(post, reply_to_comment: comment_reply.id) %> · 
             👍<%= comment_reply.likers.count %>
             <% if comment_reply.user_id == current_user.id %>
               · <%= link_to "Edit", edit_post_comment_path(post, comment_reply) %> · 

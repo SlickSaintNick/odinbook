@@ -3,6 +3,7 @@ class CommentsController < ApplicationController
 
   def new
     @comment = @post.comments.build
+    @comment.comment_reply_id = params[:reply_to_comment] if params[:reply_to_comment].present?
   end
 
   def edit
@@ -12,7 +13,6 @@ class CommentsController < ApplicationController
   def create
     @comment = @post.comments.build(comment_params)
     @comment.user = current_user
-    @comment.comment_reply_id = params[:comment_id]
 
     if @comment.save
       redirect_to root_path
@@ -45,6 +45,6 @@ class CommentsController < ApplicationController
   end
 
   def comment_params
-    params.require(:comment).permit(:body, :status)
+    params.require(:comment).permit(:body, :status, :comment_reply_id)
   end
 end

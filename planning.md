@@ -233,7 +233,7 @@ Reduce the model drastically to meet the spec. Documented in planning.dbml.
   - DONE Show all posts from current user, and followed users
     - DONE Author, Content, When, Like count, who has liked, comments, likes for comments
     - DONE Button to add a comment to a post (takes to new page initially)
-    - Button to reply to each comment with another comment
+    - DONE Button to reply to each comment with another comment
     - Button to like the post
     - Buttons to like each comment
   - **Out of sequence: Add Validations to the Model in post.rb etc**
