@@ -1,6 +1,15 @@
 <div>
-  <h1>New Comment</h1>
+  <h1>Edit Comment</h1>
   <div>
-    <%= render form, post: @post, comment: @comment %>
+    <%# render form, post: @post, comment: @comment %>
+    <%= form_with(model: [@post, @comment], local: true) do |form| %>
+      <div>
+        <%= form.label :body %><br>
+        <%= form.text_area :body, rows:"5" %>
+      </div>
+      <div>
+        <%= form.submit %>
+      </div>
+    <% end %>
   </div>
 </div>

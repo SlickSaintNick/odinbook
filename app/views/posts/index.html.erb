@@ -1,7 +1,4 @@
-<h1>posts#index</h1>
-
 <div>
-  <h3><%= current_user.profile.name %></h3>
   <p>What's on your mind, <%= current_user.profile.name.split[0] %>?</p>
   <%= link_to "New Post", new_post_path %>
 </div>
@@ -9,20 +6,45 @@
 <div>
   <% @posts.each do |post| %>
     
-    <h2><%= post.user.profile.name %></h2>
-    <p><%= post.created_at %>·Status <%= post.status %></p>
-    <% if post.user_id == current_user.id %> 
-      <p><%= link_to "Edit", edit_post_path(post) %></p>
-      <p><%= link_to "Delete", post_path(post), method: :delete, data: {turbo_method: :delete} %></p>
-    <% end %>
+    <h2>POST: <%= post.user.profile.name %></h2>
+    <p>
+      <%= post.created_at %> · 
+      Status <%= post.status %> · 
+      <% if post.user_id == current_user.id %> 
+        <%= link_to "Edit", edit_post_path(post) %> · <%= link_to "Delete", post_path(post), method: :delete, data: {turbo_method: :delete} %>
+      <% end %>
+    </p>
     <p><%= post.body %></p>
-    <p>Likes: <%= post.likers.count %>     ·     <%= post.comments.count %> comments</p>
+    <p>👍<%= post.likers.count %> · <%= post.comments.count %> comments</p>
     <p>----------- Like · <%= link_to "Comment", new_post_comment_path(post) %> -----------</p>
     <div>
-      <% post.comments.order(created_at: :desc).each do |comment| %>
-        <h3><%= comment.user.profile.name %></h3>
+      <% post.comments.where(comment_reply_id: nil).order(created_at: :desc).each do |comment| %>
+        <h3>COMMENT: <%= comment.user.profile.name %></h3>
         <p><%= comment.body %></p>
-        <p>Created at <%= comment.created_at %>> · Like · Reply · 👍<%= comment.likers.count %></p>
+        <p>
+          Created at <%= comment.created_at %> · 
+          Like · 
+          <%= link_to "Reply", new_post_comment_path(post, comment) %> · 
+          👍<%= comment.likers.count %> 
+          <% if comment.user_id == current_user.id %>
+             · <%= link_to "Edit", edit_post_comment_path(post, comment) %> · 
+            <%= link_to "Delete", post_comment_path(post, comment), method: :delete, data: {turbo_method: :delete} %>
+          <% end %>
+        </p>
+        <% comment.comment_replies.order(created_at: :desc).each do |comment_reply| %>
+          <h4> REPLY: <%= comment_reply.user.profile.name %></h3>
+          <p><%= comment_reply.body %></p>
+          <p>
+            Created at <%= comment_reply.created_at %> · 
+            Like · 
+            <%= link_to "Reply", new_post_comment_path(post, comment_reply) %> · 
+            👍<%= comment_reply.likers.count %>
+            <% if comment_reply.user_id == current_user.id %>
+              · <%= link_to "Edit", edit_post_comment_path(post, comment_reply) %> · 
+              <%= link_to "Delete", post_comment_path(post, comment_reply), method: :delete, data: {turbo_method: :delete} %>
+            <% end %>
+          </p>
+        <% end %>
         <p>-------------------------------------------------------</p>
       <% end %>
     </div>

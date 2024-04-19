@@ -59,11 +59,7 @@ Rails.logger.info "Created #{Profile.count} profiles"
 
 Follow.destroy_all
 
-# Test user follows everyone.
-test_user.follows.create!(followed_user_id: homer.id, status: 'accepted_follow')
-test_user.follows.create!(followed_user_id: marge.id, status: 'accepted_follow')
-test_user.follows.create!(followed_user_id: bart.id, status: 'accepted_follow')
-test_user.follows.create!(followed_user_id: monty.id, status: 'accepted_follow')
+# Test user follows no-one.
 
 # Homer follows Marge and has requested to follow Monty.
 homer.follows.create!(followed_user_id: marge.id, status: 'accepted_follow')
