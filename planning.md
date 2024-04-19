@@ -213,7 +213,7 @@ Reduce the model drastically to meet the spec. Documented in planning.dbml.
 - DONE Posts should always display the post content, author, comments, and likes.
 - DONE There should be an index page for posts, which shows all the recent posts from the current user and users they are following.
 - DONE Users can comment on posts.
-- Users can like posts.
+- DONE Users can like posts.
 - Users can send follow requests to other users.
 - Users can create a profile with a profile picture. You may be able to get the profile picture when users sign in using OmniAuth. If this isn't the case you can use Gravatar to generate the photo.
 - A user's profile page should contain their profile information, profile photo, and posts.
@@ -234,12 +234,12 @@ Reduce the model drastically to meet the spec. Documented in planning.dbml.
     - DONE Author, Content, When, Like count, who has liked, comments, likes for comments
     - DONE Button to add a comment to a post (takes to new page initially)
     - DONE Button to reply to each comment with another comment
-    - Button to like the post
-    - Buttons to like each comment
+    - DONE Button to like the post
+    - DONE Buttons to like each comment
+    - DONE Buttons to like each comment reply
   - **Out of sequence: Add Validations to the Model in post.rb etc, check all required fields are null**
   - List of followed users, click on them to view their profile#show
   - Pending follow requests, button to accept or reject
-  - Replace with Turbo Streams functionality
 - profile#new / #edit - linked from Home page
   - Create and edit profile including profile picture
 - profile#show
@@ -253,6 +253,7 @@ Reduce the model drastically to meet the spec. Documented in planning.dbml.
 - Set up mailer for new users - welcome email
 - Test mail using letter_opener Gem
 - Set up email provider for deployment
+- Replace with Turbo Streams functionality
 - Deploy to fly.io
 
 #### Extra credit

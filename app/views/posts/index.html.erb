@@ -5,58 +5,78 @@
 
 <div>
   <% @posts.each do |post| %>
-    
     <h2>POST: <%= post.user.profile.name %></h2>
     <p>
       <%= post.created_at %> · 
       Status <%= post.status %> · 
+
       <% if post.user_id == current_user.id %> 
         <%= link_to "Edit", edit_post_path(post) %> · <%= link_to "Delete", post_path(post), method: :delete, data: {turbo_method: :delete} %>
       <% end %>
+
     </p>
     <p><%= post.body %></p>
     <p>👍<%= post.likers.count %> · <%= post.comments.count %> comments</p>
     <p>
       ----------- 
+
       <% if current_user.liked_posts.include?(post) %>
         <%= link_to 'Unlike', like_path(post.likes.find_by(user: current_user)), method: :delete, data: {turbo_method: :delete}%>
       <% else %>
         <%= link_to 'Like', likes_path(likeable_id: post.id, likeable_type: 'post'), method: :post, data: {turbo_method: :post} %> · 
       <% end %>
+
       <%= link_to "Comment", new_post_comment_path(post) %> -----------
     </p>
+
     <div>
       <% post.comments.where(comment_reply_id: nil).order(:created_at).each do |comment| %>
         <h3>COMMENT: <%= comment.user.profile.name %></h3>
         <p><%= comment.body %></p>
         <p>
           Created at <%= comment.created_at %> · 
-          Like · 
+
+          <% if current_user.liked_comments.include?(comment) %>
+            <%= link_to 'Unlike', like_path(comment.likes.find_by(user: current_user)), method: :delete, data: {turbo_method: :delete}%>
+          <% else %>
+            <%= link_to 'Like', likes_path(likeable_id: comment.id, likeable_type: 'comment'), method: :post, data: {turbo_method: :post} %> · 
+          <% end %>
+
           <%= link_to "Reply", new_post_comment_path(post, reply_to_comment: comment.id) %> · 
           👍<%= comment.likers.count %> 
+
           <% if comment.user_id == current_user.id %>
              · <%= link_to "Edit", edit_post_comment_path(post, comment) %> · 
             <%= link_to "Delete", post_comment_path(post, comment), method: :delete, data: {turbo_method: :delete} %>
           <% end %>
+
         </p>
         <% comment.comment_replies.order(:created_at).each do |comment_reply| %>
           <h4> REPLY: <%= comment_reply.user.profile.name %></h3>
           <p><%= comment_reply.body %></p>
           <p>
             Created at <%= comment_reply.created_at %> · 
-            Like · 
-            <%= link_to "Reply", new_post_comment_path(post, reply_to_comment: comment_reply.id) %> · 
+
+            <% if current_user.liked_comments.include?(comment_reply) %>
+              <%= link_to 'Unlike', like_path(comment_reply.likes.find_by(user: current_user)), method: :delete, data: {turbo_method: :delete}%>
+            <% else %>
+              <%= link_to 'Like', likes_path(likeable_id: comment_reply.id, likeable_type: 'comment'), method: :post, data: {turbo_method: :post} %> · 
+            <% end %>
+
+            <%= link_to "Reply", new_post_comment_path(post, reply_to_comment: comment.id) %> · 
             👍<%= comment_reply.likers.count %>
+            
             <% if comment_reply.user_id == current_user.id %>
               · <%= link_to "Edit", edit_post_comment_path(post, comment_reply) %> · 
               <%= link_to "Delete", post_comment_path(post, comment_reply), method: :delete, data: {turbo_method: :delete} %>
             <% end %>
+
           </p>
         <% end %>
         <p>-------------------------------------------------------</p>
       <% end %>
     </div>
-    <p>Comment as <%= current_user.profile.name %> · 📷⏯
+    <p><%= link_to "Comment", new_post_comment_path(post) %> as <%= current_user.profile.name %> · 📷⏯
     <p>📷⏯                 ·                ▶</p>
     <p>====================================================</p>
   <% end %>
