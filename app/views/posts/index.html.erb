@@ -16,9 +16,17 @@
     </p>
     <p><%= post.body %></p>
     <p>👍<%= post.likers.count %> · <%= post.comments.count %> comments</p>
-    <p>----------- Like · <%= link_to "Comment", new_post_comment_path(post) %> -----------</p>
+    <p>
+      ----------- 
+      <% if current_user.liked_posts.include?(post) %>
+        <%= link_to 'Unlike', like_path(post.likes.find_by(user: current_user)), method: :delete, data: {turbo_method: :delete}%>
+      <% else %>
+        <%= link_to 'Like', likes_path(likeable_id: post.id, likeable_type: 'post'), method: :post, data: {turbo_method: :post} %> · 
+      <% end %>
+      <%= link_to "Comment", new_post_comment_path(post) %> -----------
+    </p>
     <div>
-      <% post.comments.where(comment_reply_id: nil).order(created_at: :desc).each do |comment| %>
+      <% post.comments.where(comment_reply_id: nil).order(:created_at).each do |comment| %>
         <h3>COMMENT: <%= comment.user.profile.name %></h3>
         <p><%= comment.body %></p>
         <p>
@@ -31,7 +39,7 @@
             <%= link_to "Delete", post_comment_path(post, comment), method: :delete, data: {turbo_method: :delete} %>
           <% end %>
         </p>
-        <% comment.comment_replies.order(created_at: :desc).each do |comment_reply| %>
+        <% comment.comment_replies.order(:created_at).each do |comment_reply| %>
           <h4> REPLY: <%= comment_reply.user.profile.name %></h3>
           <p><%= comment_reply.body %></p>
           <p>

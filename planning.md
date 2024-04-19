@@ -212,8 +212,8 @@ Reduce the model drastically to meet the spec. Documented in planning.dbml.
 - DONE Users can create posts (begin with text only).
 - DONE Posts should always display the post content, author, comments, and likes.
 - DONE There should be an index page for posts, which shows all the recent posts from the current user and users they are following.
+- DONE Users can comment on posts.
 - Users can like posts.
-- Users can comment on posts.
 - Users can send follow requests to other users.
 - Users can create a profile with a profile picture. You may be able to get the profile picture when users sign in using OmniAuth. If this isn't the case you can use Gravatar to generate the photo.
 - A user's profile page should contain their profile information, profile photo, and posts.
@@ -236,7 +236,7 @@ Reduce the model drastically to meet the spec. Documented in planning.dbml.
     - DONE Button to reply to each comment with another comment
     - Button to like the post
     - Buttons to like each comment
-  - **Out of sequence: Add Validations to the Model in post.rb etc**
+  - **Out of sequence: Add Validations to the Model in post.rb etc, check all required fields are null**
   - List of followed users, click on them to view their profile#show
   - Pending follow requests, button to accept or reject
   - Replace with Turbo Streams functionality
