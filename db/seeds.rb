@@ -60,22 +60,22 @@ Rails.logger.info "Created #{Profile.count} profiles"
 Follow.destroy_all
 
 # Test user follows everyone.
-test_user.follows.create!(followed_user_id: homer.id)
-test_user.follows.create!(followed_user_id: marge.id)
-test_user.follows.create!(followed_user_id: bart.id)
-test_user.follows.create!(followed_user_id: monty.id)
+test_user.follows.create!(followed_user_id: homer.id, status: 'accepted_follow')
+test_user.follows.create!(followed_user_id: marge.id, status: 'accepted_follow')
+test_user.follows.create!(followed_user_id: bart.id, status: 'accepted_follow')
+test_user.follows.create!(followed_user_id: monty.id, status: 'accepted_follow')
 
 # Homer follows Marge and has requested to follow Monty.
-homer.follows.create!(followed_user_id: marge.id)
+homer.follows.create!(followed_user_id: marge.id, status: 'accepted_follow')
 homer.follows.create!(followed_user_id: monty.id, status: 'pending_follow')
 
 # Marge follows Homer and Bart.
-marge.follows.create!(followed_user_id: homer.id)
-marge.follows.create!(followed_user_id: bart.id)
+marge.follows.create!(followed_user_id: homer.id, status: 'accepted_follow')
+marge.follows.create!(followed_user_id: bart.id, status: 'accepted_follow')
 
 # Bart follows Homer and Marge and has requested to follow Monty.
-bart.follows.create!(followed_user_id: homer.id)
-bart.follows.create!(followed_user_id: marge.id)
+bart.follows.create!(followed_user_id: homer.id, status: 'accepted_follow')
+bart.follows.create!(followed_user_id: marge.id, status: 'accepted_follow')
 bart.follows.create!(followed_user_id: monty.id, status: 'pending_follow')
 
 # Monty follows no-one.

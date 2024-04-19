@@ -1,6 +1,6 @@
 class PostsController < ApplicationController
   def index
-    @posts = Post.where(user: current_user.followed_users)
+    @posts = Post.where(user: current_user.followed_users.where(follows: { status: 'accepted_follow' }))
                  .or(Post.where(user: current_user))
                  .order(created_at: :desc)
   end
@@ -30,8 +30,8 @@ class PostsController < ApplicationController
   def update
     @post = Post.find(params[:id])
 
-    if @post.update
-      redirect_to @post
+    if @post.update(post_params)
+      redirect_to root_path
     else
       render :new, status: :unprocessable_entity
     end
