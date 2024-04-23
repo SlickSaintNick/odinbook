@@ -1,0 +1,15 @@
+<div>
+  <%= form_with model: profile do |form| %>
+    <div>
+      <%= form.label :name %><br>
+      <%= form.text_input :name %>
+    </div>
+    <div>
+      <%= form.label :bio %><br>
+      <%= form.text_area :bio, rows: "5" %>
+    </div>
+    <div>
+      <%= form.submit %>
+    </div>
+  <% end %>
+</div>
