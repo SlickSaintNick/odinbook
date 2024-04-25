@@ -214,7 +214,7 @@ Reduce the model drastically to meet the spec. Documented in planning.dbml.
 - DONE There should be an index page for posts, which shows all the recent posts from the current user and users they are following.
 - DONE Users can comment on posts.
 - DONE Users can like posts.
-- Users can send follow requests to other users.
+- DONE Users can send follow requests to other users.
 - Users can create a profile with a profile picture. You may be able to get the profile picture when users sign in using OmniAuth. If this isn't the case you can use Gravatar to generate the photo.
 - A user's profile page should contain their profile information, profile photo, and posts.
 - There should be an index page for users, which shows all users and buttons for sending follow requests to users the user is not already following or have a pending request.
@@ -237,19 +237,17 @@ Reduce the model drastically to meet the spec. Documented in planning.dbml.
     - DONE Button to like the post
     - DONE Buttons to like each comment
     - DONE Buttons to like each comment reply
-  - **Out of sequence: Add Validations to the Model in post.rb etc, check all required fields are null**
-  - List of followed users, click on them to view their profile#show
-  - Pending follow requests, button to accept or reject
-- profile#new / #edit - linked from Home page
-  - Create and edit profile including profile picture
-- profile#show
-  - Profile information
-  - Profile photo
-    - Add to model - Gravatar
-  - Posts by that user (and comments and etc)
-  - Button to request follow, if not already following and not that user.
-- profile#index
-  - List of all users, with buttons to send them follow requests
+  - DONE **Out of sequence: Add Validations to the Model in post.rb etc, check all required fields are null**
+  - DONE List of accepted and pending follow requests on post index page, button to accept or reject
+- DONE profile#edit - linked from Home page (edit own profile)
+- DONE profile#show - linked from Home page (view own profile)
+  - DONE Profile#show page include profile name and bio
+  - DONE profile#edit - linked from profile page (edit own profile)
+  - DONE followed users and links to see their profile pages
+  - DONE Own posts
+- DONE profile#index
+  - DONE List of all users, with buttons to send them follow requests
+  - Add Profile photo to model, profile#show - Active Storage - or gravatar?
 - Set up mailer for new users - welcome email
 - Test mail using letter_opener Gem
 - Set up email provider for deployment

@@ -3,12 +3,10 @@ Rails.application.routes.draw do
   devise_for :users
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
-  resources :profiles # , except: [:index, :show, :destroy]
-
+  resources :profiles, except: [:destroy]
   resources :posts do
     resources :comments, except: [:show, :index]
   end
-
   resources :likes, only: [:create, :destroy]
   resources :follows, only: [:create, :edit, :update, :destroy]
 

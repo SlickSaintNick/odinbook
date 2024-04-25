@@ -1,0 +1,57 @@
+<h1>Profile</h1>
+
+<div>
+  <p>Name: <%= @profile.name %></p>
+  <p>Bio: <%= @profile.bio %></p>
+  <p>Email: <%= @profile.user.email %></p>
+  <p>Member since: <%= @profile.user.created_at %></p>
+  <% if @profile.user_id == current_user.id %>
+    <%= link_to "Edit Your Profile", edit_profile_path(current_user) %>
+  <% end %>
+</div>
+
+<% if @profile.user.id == current_user.id %>
+  <div>
+    <% unless @following.nil? || @following.empty? %>
+      <h3>Following:</h3>
+      <% @following.each do |following| %>
+        <p><%= following.profile.name %></p>
+        <p>PROFILE PICTURE</p>
+        <p><%= link_to "Profile", profile_path(following) %>
+        <p><%= link_to "Unfollow", follow_path(current_user.id, following_id: following.id), method: :delete, data: {turbo_method: :delete} %></p>
+      <% end %>
+    <% end %>
+  </div>
+  <div>
+    <% unless @followers.nil? || @followers.empty? %>
+      <h3>Followers:</h3>
+      <% @followers.each do |follower| %>
+        <p><%= follower.profile.name %></p>
+        <p>PROFILE PICTURE</p>
+        <p><%= link_to "Profile", profile_path(follower) %>
+        <% unless @following.include?(follower) || @pending_follows.include?(follower) %>
+          <p><%= link_to "Follow", follows_path(following_id: follower.id), method: :post, data: {turbo_method: :post} %></p>
+        <% end %>
+        <p><%= link_to "Remove", follow_path(current_user.id, follower_id: follower.id), method: :delete, data: {turbo_method: :delete} %></p>
+      <% end %>
+    <% end %>
+  </div>
+  <div>
+    <% unless @pending_followers.nil? || @pending_followers.empty? %>
+      <h3>Pending Follow Requests:</h3>
+      <% @pending_followers.each do |follower| %>
+        <p><%= follower.profile.name %></p> 
+        <p>PROFILE PICTURE</p> 
+        <p><%= link_to "Reject", follow_path(current_user.id, follower_id: follower.id), method: :delete, data: {turbo_method: :delete} %></p>
+        <p><%= link_to "Accept", 
+            follow_path(Follow.find_by(following_user_id: follower.id, followed_user_id: current_user.id), status: "accepted_follow"), 
+            method: :put, data: {turbo_method: :patch},
+            action: :update %></p>
+      <% end %>
+    <% end %>
+  </div>
+<% end %>
+
+<div>
+  <%= render @posts %>
+</div>
