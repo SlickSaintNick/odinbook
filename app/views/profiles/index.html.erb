@@ -1,0 +1,34 @@
+<div>
+  <h1>User Index</h1>
+</div>
+
+<% unless @following.nil? || @following.empty? %>
+  <h2>Following:</h2>
+  <div>
+    <% @following.each do |follow| %>
+      <p><%= follow.profile.name %></p>
+      <p>PROFILE IMAGE</p>
+    <% end %>
+  </div>
+<% end %>
+
+<% unless @pending_follows.nil? || @pending_follows.empty? %>
+  <h2>Requested to Follow:</h2>
+  <div>
+    <% @pending_follows.each do |follow| %>
+      <p><%= follow.profile.name %></p>
+      <p>PROFILE IMAGE</p>
+    <% end %>
+  </div>
+<% end %>
+
+<% unless @not_followed.nil? || @not_followed.empty? %>
+  <h2>Other Users:</h2>
+  <div>
+    <% @not_followed.each do |follow| %>
+      <p><%= follow.profile.name %></p>
+      <p>PROFILE IMAGE</p>
+      <p><%= link_to "Follow", follows_path(following_id: follow.id), method: :post, data: {turbo_method: :post} %></p>
+    <% end %>
+  </div>
+<% end %>

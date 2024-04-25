@@ -23,7 +23,7 @@
   </p>
 
   <div>
-    <%= post.comments.where(comment_reply_id: nil).order(:created_at).each do |comment| %>
+    <% post.comments.where(comment_reply_id: nil).order(:created_at).each do |comment| %>
       <%= render comment %>
       <div>
         <%= render comment.comment_replies.order(:created_at), as: :comment %>
