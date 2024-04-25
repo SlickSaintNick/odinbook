@@ -5,6 +5,8 @@ class Post < ApplicationRecord
     archived_post: 2
   }
 
+  validates :body, presence: true, length: { maximum: 1000 }
+
   belongs_to :user
   has_many :comments, dependent: :destroy
   has_many :likes, as: :likeable, dependent: :destroy

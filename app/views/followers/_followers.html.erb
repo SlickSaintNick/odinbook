@@ -1,0 +1,47 @@
+<h2>Followers</h2>
+<% if current_user.followed_users.count.zero? %>
+  <p>Visit the User Index page to follow other users!</p>
+<% else %>
+  <div>
+    <% unless current_user.followed_users.where(follows: { status: "accepted_follow" }).count.zero? %>
+      <h3>You are following:</h3>
+      <% current_user.followed_users.where(follows: { status: "accepted_follow" }).each do |following| %>
+        <%= following.profile.name %> | 
+        <%= link_to "Unfollow", follow_path(current_user.id, following_id: following.id), method: :delete, data: {turbo_method: :delete} %>
+      <% end %>
+    <% end %>
+
+    <% unless current_user.followed_users.where(follows: { status: "pending_follow" }).count.zero? %>
+      <h3>You have requested to follow:</h3>
+      <% current_user.followed_users.where(follows: { status: "pending_follow" }).each do |following| %>
+        <%= following.profile.name %> | 
+        <%= link_to "Unfollow", follow_path(current_user.id, following_id: following.id), method: :delete, data: {turbo_method: :delete} %>
+      <% end %>
+    <% end %>
+  </div>
+<% end %>
+
+<% unless current_user.following_users.count.zero? %>
+  <div>
+    <h2>Following</h2>
+    <% unless current_user.following_users.where(follows: { status: "accepted_follow" }).count.zero? %>
+      <h3>You are followed by:</h3>
+      <% current_user.following_users.where(follows: { status: "accepted_follow" }).each do |follower| %>
+        <%= follower.profile.name %> | 
+        <%= link_to "Remove", follow_path(current_user.id, follower_id: follower.id), method: :delete, data: {turbo_method: :delete} %>
+      <% end %>
+    <% end %>
+
+    <% unless current_user.following_users.where(follows: { status: "pending_follow" }).count.zero? %>
+      <h3>You have pending follow requests:</h3>
+      <% current_user.following_users.where(follows: { status: "pending_follow" }).each do |follower| %>
+        <%= follower.profile.name %> | 
+        <%= link_to "Reject", follow_path(current_user.id, follower_id: follower.id), method: :delete, data: {turbo_method: :delete} %>
+        <%= link_to "Accept", 
+            follow_path(Follow.find_by(following_user_id: follower.id, followed_user_id: current_user.id), status: "accepted_follow"), 
+            method: :put, data: {turbo_method: :patch},
+            action: :update %>
+      <% end %>
+    <% end %>
+  </div>
+<% end %>

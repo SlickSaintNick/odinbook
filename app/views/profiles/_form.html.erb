@@ -1,8 +1,8 @@
 <div>
-  <%= form_with model: profile do |form| %>
+  <%= form_with model: @profile do |form| %>
     <div>
       <%= form.label :name %><br>
-      <%= form.text_input :name %>
+      <%= form.text_field :name %>
     </div>
     <div>
       <%= form.label :bio %><br>

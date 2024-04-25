@@ -1,20 +1,20 @@
 class ProfilesController < ApplicationController
   def new
-    @profile = Profile.new
+    @profile = current_user.create_profile
+  end
+
+  def edit
+    @profile = current_user.profile
   end
 
   def create
-    @profile = Profile.new(profile_params)
+    @profile = current_user.create_profile(profile_params)
 
     if @profile.save
       redirect_to root_path
     else
       render :new, status: :unprocessable_entity
     end
-  end
-
-  def edit
-    @profile = Profile.find(params[:id])
   end
 
   def update

@@ -5,6 +5,8 @@ class Comment < ApplicationRecord
     archived_comment: 2
   }
 
+  validates :body, presence: true, length: { maximum: 1000 }
+
   belongs_to :user
   belongs_to :post
 
