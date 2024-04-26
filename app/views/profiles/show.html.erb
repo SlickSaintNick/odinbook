@@ -1,12 +1,15 @@
 <h1>Profile</h1>
 
 <div>
+  <% if @profile.profile_image.present? %>
+    <%= image_tag @profile.profile_image.variant(resize_to_limit: [nil, 200]) %>
+  <% end %>
   <p>Name: <%= @profile.name %></p>
   <p>Bio: <%= @profile.bio %></p>
   <p>Email: <%= @profile.user.email %></p>
   <p>Member since: <%= @profile.user.created_at %></p>
   <% if @profile.user_id == current_user.id %>
-    <%= link_to "Edit Your Profile", edit_profile_path(current_user) %>
+    <%= link_to "Edit Your Profile", edit_profile_path(current_user.profile) %>
   <% end %>
 </div>
 

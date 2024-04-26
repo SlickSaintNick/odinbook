@@ -1,4 +1,7 @@
-<h3><%= comment.comment_reply ? "REPLY" : "COMMENT" %>: <%= comment.user.profile.name %></h3>
+<h3><%= comment.comment_reply ? "REPLY" : "COMMENT" %>: 
+  <%= comment.user.profile.name %>
+  <%= image_tag comment.user.profile.profile_image.variant(resize_to_limit: [nil, 30]) if comment.user.profile.profile_image.present? %>
+</h3>
 <p><%= comment.body %></p>
 <p>
   Created at <%= comment.created_at %> · 

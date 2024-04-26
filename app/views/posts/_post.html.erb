@@ -1,4 +1,7 @@
   <h2>POST: <%= post.user.profile.name %></h2>
+  <% if post.user.profile.profile_image.present? %>
+    <%= image_tag post.user.profile.profile_image.variant(resize_to_limit: [nil, 50]) %>
+  <% end %>
   <p>
     <%= post.created_at %> · 
     Status <%= post.status %> · 

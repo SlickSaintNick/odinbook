@@ -1,8 +1,8 @@
 <% if current_user %>
   <%= link_to "Home", root_path %> | 
   <%= link_to "Back", :back %> | 
-  <%= link_to "My Profile", profile_path(current_user) %> |
-  <%= link_to "Edit Profile", edit_profile_path(current_user) %> | 
+  <%= link_to "My Profile", profile_path(current_user.profile) %> |
+  <%= link_to "Edit Profile", edit_profile_path(current_user.profile) %> | 
   <%= link_to "User Index", profiles_path %> | 
   <%= link_to "Sign out", destroy_user_session_path, method: :delete, data: { turbo_method: :delete } %>
 <% else %>

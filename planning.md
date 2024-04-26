@@ -245,9 +245,9 @@ Reduce the model drastically to meet the spec. Documented in planning.dbml.
   - DONE profile#edit - linked from profile page (edit own profile)
   - DONE followed users and links to see their profile pages
   - DONE Own posts
-- profile#index
-  - List of all users, with buttons to send them follow requests
-  - Add Profile photo to model, profile#show - Active Storage - or gravatar?
+- DONE profile#index
+  - DONE List of all users, with buttons to send them follow requests
+  - DONE Add Profile photo to model, profile#show - Active Storage
 - Set up mailer for new users - welcome email
 - Test mail using letter_opener Gem
 - Set up email provider for deployment

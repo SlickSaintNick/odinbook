@@ -11,4 +11,18 @@ class Post < ApplicationRecord
   has_many :comments, dependent: :destroy
   has_many :likes, as: :likeable, dependent: :destroy
   has_many :likers, through: :likes, source: :user
+
+  has_one_attached :post_image
+  # validate :acceptable_image
+
+  def acceptable_image
+    return unless profile_image.attached?
+
+    errors.add(:main_image, 'is too big') unless profile_image.blob.byte_size <= 1.megabyte
+
+    acceptable_types = ['image/jpeg', 'image/png']
+    return if acceptable_types.include?(main_image.content_type)
+
+    errors.add(:main_image, 'must be a JPEG or PNG')
+  end
 end

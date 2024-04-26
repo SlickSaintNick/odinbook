@@ -8,7 +8,7 @@ class ProfilesController < ApplicationController
 
   def show
     @profile = Profile.find(params[:id])
-    @posts = Post.where(user_id: params[:id])
+    @posts = Post.where(user_id: @profile.user.id)
   end
 
   def new
@@ -51,6 +51,6 @@ class ProfilesController < ApplicationController
   end
 
   def profile_params
-    params.require(:profile).permit(:name, :bio, :role)
+    params.require(:profile).permit(:name, :bio, :role, :profile_image)
   end
 end

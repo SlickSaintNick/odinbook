@@ -5,6 +5,10 @@
       <%= form.text_area :body, rows:"5" %>
     </div>
     <div>
+      <%= form.label :post_image %>
+      <%= form.file_field :post_image %>
+    </div>
+    <div>
       <%= form.submit %>
     </div>
   <% end %>
