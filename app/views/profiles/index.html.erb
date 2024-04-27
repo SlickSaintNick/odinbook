@@ -1,13 +1,10 @@
-<div>
-  <h1>User Index</h1>
-</div>
-
 <% unless @following.nil? || @following.empty? %>
   <h2>Following:</h2>
   <div>
     <% @following.each do |follow| %>
+      <%= image_tag follow.profile.profile_image.variant(resize_to_limit: [nil, 50]) %>
       <p><%= follow.profile.name %></p>
-      <p>PROFILE IMAGE</p>
+      <p><%= (current_user.followed_users.where(follows: { status: "accepted_follow" }) & follow.followed_users.where(follows: { status: "accepted_follow" })).count %> mutual followers</p>
     <% end %>
   </div>
 <% end %>
@@ -16,8 +13,9 @@
   <h2>Requested to Follow:</h2>
   <div>
     <% @pending_follows.each do |follow| %>
+      <%= image_tag follow.profile.profile_image.variant(resize_to_limit: [nil, 50]) %>
       <p><%= follow.profile.name %></p>
-      <p>PROFILE IMAGE</p>
+      <p><%= (current_user.followed_users.where(follows: { status: "accepted_follow" }) & follow.followed_users.where(follows: { status: "accepted_follow" })).count %> mutual followers</p>
     <% end %>
   </div>
 <% end %>
@@ -26,8 +24,9 @@
   <h2>Other Users:</h2>
   <div>
     <% @not_followed.each do |follow| %>
+      <%= image_tag follow.profile.profile_image.variant(resize_to_limit: [nil, 50]) %>
       <p><%= follow.profile.name %></p>
-      <p>PROFILE IMAGE</p>
+      <p><%= (current_user.followed_users.where(follows: { status: "accepted_follow" }) & follow.followed_users.where(follows: { status: "accepted_follow" })).count %> mutual followers</p>
       <p><%= link_to "Follow", follows_path(following_id: follow.id), method: :post, data: {turbo_method: :post} %></p>
     <% end %>
   </div>

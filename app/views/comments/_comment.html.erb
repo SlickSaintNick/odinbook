@@ -1,22 +1,26 @@
-<h3><%= comment.comment_reply ? "REPLY" : "COMMENT" %>: 
-  <%= comment.user.profile.name %>
+<div>
   <%= image_tag comment.user.profile.profile_image.variant(resize_to_limit: [nil, 30]) if comment.user.profile.profile_image.present? %>
-</h3>
-<p><%= comment.body %></p>
-<p>
-  Created at <%= comment.created_at %> · 
-
+</div>
+<div>
+  <%= comment.user.profile.name %><br>
+  <%= comment.body %>
+</div>
+<div>
+  <%= format_time(comment.created_at) %> ·
+  
   <% if current_user.liked_comments.include?(comment) %>
-    <%= link_to 'Unlike', like_path(comment.likes.find_by(user: current_user)), method: :delete, data: {turbo_method: :delete}%>
+    <%= link_to 'Unlike', like_path(comment.likes.find_by(user: current_user)), method: :delete, data: {turbo_method: :delete}%> ·
   <% else %>
-    <%= link_to 'Like', likes_path(likeable_id: comment.id, likeable_type: 'comment'), method: :post, data: {turbo_method: :post} %> · 
+    <%= link_to 'Like', likes_path(likeable_id: comment.id, likeable_type: 'comment'), method: :post, data: {turbo_method: :post} %> ·
   <% end %>
-
-  <%= link_to "Reply", new_post_comment_path(comment.post, reply_to_comment: comment.id) %> · 
-  👍<%= comment.likers.count %> 
-
+  
+  <%= link_to "Reply", new_post_comment_path(comment.post, reply_to_comment: comment.id) %>
+  <% if comment.likers.count > 0 then %>
+     · 👍<%= comment.likers.count %>
+  <% end %>
+  
   <% if comment.user_id == current_user.id %>
      · <%= link_to "Edit", edit_post_comment_path(comment.post, comment) %>
      · <%= link_to "Delete", post_comment_path(comment.post, comment), method: :delete, data: {turbo_method: :delete} %>
   <% end %>
-</p>
+</div>

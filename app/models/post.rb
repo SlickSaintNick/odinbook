@@ -6,6 +6,7 @@ class Post < ApplicationRecord
   }
 
   validates :body, presence: true, length: { maximum: 1000 }
+  validate :acceptable_image
 
   belongs_to :user
   has_many :comments, dependent: :destroy
@@ -13,7 +14,8 @@ class Post < ApplicationRecord
   has_many :likers, through: :likes, source: :user
 
   has_one_attached :post_image
-  # validate :acceptable_image
+
+  private
 
   def acceptable_image
     return unless profile_image.attached?

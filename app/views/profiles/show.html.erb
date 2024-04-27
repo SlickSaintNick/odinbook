@@ -1,16 +1,22 @@
-<h1>Profile</h1>
-
 <div>
   <% if @profile.profile_image.present? %>
     <%= image_tag @profile.profile_image.variant(resize_to_limit: [nil, 200]) %>
   <% end %>
-  <p>Name: <%= @profile.name %></p>
-  <p>Bio: <%= @profile.bio %></p>
-  <p>Email: <%= @profile.user.email %></p>
-  <p>Member since: <%= @profile.user.created_at %></p>
-  <% if @profile.user_id == current_user.id %>
-    <%= link_to "Edit Your Profile", edit_profile_path(current_user.profile) %>
-  <% end %>
+</div>
+  <div>Name: <%= @profile.name %></div>
+  <div>
+    <% if @followers.count > 0 %>
+      <%= @followers.count %> followers
+    <% end %>
+  </div>
+  <div>Bio: <%= @profile.bio %></div>
+  <div>Email: <%= @profile.user.email %></div>
+  <div>Member since: <%= @profile.user.created_at.strftime('%-d %B %Y') %></div>
+  <div>
+    <% if @profile.user_id == current_user.id %>
+      <%= link_to "Edit Your Profile", edit_profile_path(current_user.profile) %>
+    <% end %>
+  </div>
 </div>
 
 <% if @profile.user.id == current_user.id %>
@@ -19,8 +25,8 @@
       <h3>Following:</h3>
       <% @following.each do |following| %>
         <p><%= following.profile.name %></p>
-        <p>PROFILE PICTURE</p>
-        <p><%= link_to "Profile", profile_path(following) %>
+        <p><%= (current_user.followed_users.where(follows: { status: "accepted_follow" }) & following.followed_users.where(follows: { status: "accepted_follow" })).count %> mutual followers</p>
+        <p><%= link_to image_tag(following.profile.profile_image.variant(resize_to_limit: [nil, 50])), profile_path(following.profile) %>
         <p><%= link_to "Unfollow", follow_path(current_user.id, following_id: following.id), method: :delete, data: {turbo_method: :delete} %></p>
       <% end %>
     <% end %>
@@ -30,8 +36,8 @@
       <h3>Followers:</h3>
       <% @followers.each do |follower| %>
         <p><%= follower.profile.name %></p>
-        <p>PROFILE PICTURE</p>
-        <p><%= link_to "Profile", profile_path(follower) %>
+        <p><%= (current_user.followed_users.where(follows: { status: "accepted_follow" }) & follower.followed_users.where(follows: { status: "accepted_follow" })).count %> mutual followers</p>
+        <p><%= link_to image_tag(follower.profile.profile_image.variant(resize_to_limit: [nil, 50])), profile_path(follower.profile) %>
         <% unless @following.include?(follower) || @pending_follows.include?(follower) %>
           <p><%= link_to "Follow", follows_path(following_id: follower.id), method: :post, data: {turbo_method: :post} %></p>
         <% end %>
@@ -43,8 +49,9 @@
     <% unless @pending_followers.nil? || @pending_followers.empty? %>
       <h3>Pending Follow Requests:</h3>
       <% @pending_followers.each do |follower| %>
-        <p><%= follower.profile.name %></p> 
-        <p>PROFILE PICTURE</p> 
+        <p><%= follower.profile.name %></p>
+        <p><%= (current_user.followed_users.where(follows: { status: "accepted_follow" }) & follower.followed_users.where(follows: { status: "accepted_follow" })).count %> mutual followers</p>
+        <%= image_tag follower.profile.profile_image.variant(resize_to_limit: [nil, 50]) %>
         <p><%= link_to "Reject", follow_path(current_user.id, follower_id: follower.id), method: :delete, data: {turbo_method: :delete} %></p>
         <p><%= link_to "Accept", 
             follow_path(Follow.find_by(following_user_id: follower.id, followed_user_id: current_user.id), status: "accepted_follow"), 

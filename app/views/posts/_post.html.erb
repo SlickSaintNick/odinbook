@@ -1,42 +1,48 @@
-  <h2>POST: <%= post.user.profile.name %></h2>
-  <% if post.user.profile.profile_image.present? %>
-    <%= image_tag post.user.profile.profile_image.variant(resize_to_limit: [nil, 50]) %>
-  <% end %>
-  <p>
-    <%= post.created_at %> · 
-    Status <%= post.status %> · 
-
-    <% if post.user_id == current_user.id %> 
-      <%= link_to "Edit", edit_post_path(post) %> · <%= link_to "Delete", post_path(post), method: :delete, data: {turbo_method: :delete} %>
-    <% end %>
-
-  </p>
-  <p><%= post.body %></p>
-  <p>👍<%= post.likers.count %> · <%= post.comments.count %> comments</p>
-  <p>
-    ----------- 
-
-    <% if current_user.liked_posts.include?(post) %>
-      <%= link_to 'Unlike', like_path(post.likes.find_by(user: current_user)), method: :delete, data: {turbo_method: :delete}%>
-    <% else %>
-      <%= link_to 'Like', likes_path(likeable_id: post.id, likeable_type: 'post'), method: :post, data: {turbo_method: :post} %> · 
-    <% end %>
-
-    <%= link_to "Comment", new_post_comment_path(post) %> -----------
-  </p>
-
+<div>
   <div>
-    <% post.comments.where(comment_reply_id: nil).order(:created_at).each do |comment| %>
-      <%= render comment %>
-      <div>
-        <%= render comment.comment_replies.order(:created_at), as: :comment %>
-      </div>
+    <% if post.user.profile.profile_image.present? %>
+      <%= image_tag post.user.profile.profile_image.variant(resize_to_limit: [nil, 50]) %>
     <% end %>
   </div>
+  <div>
+    <%= post.user.profile.name %>
+  </div>
+  <div>
+    <%= format_time(post.created_at) %> ·
+    <%= post.status.split("_")[0].capitalize %> ·
+    <% if post.user_id == current_user.id %>
+      <%= link_to "Edit", edit_post_path(post) %> · <%= link_to "Delete", post_path(post), method: :delete, data: {turbo_method: :delete} %>
+    <% end %>
+  </div>
+</div>
 
-  <p>-------------------------------------------------------</p>
-  <p><%= link_to "Comment", new_post_comment_path(post) %> as <%= current_user.profile.name %> · 📷⏯
-  <p>📷⏯                 ·                ▶</p>
-  <p>====================================================</p>
+<div>
+  <%= post.body %>
+  <% if post.post_image.present? %>
+    <%= image_tag post.post_image.variant(resize_to_limit: [100, nil]) %>
+  <% end %>
+</div>
+<div>
+  👍<%= post.likers.count %> · <%= post.comments.count %> comments
+</div>
 
-    
+<div>
+  <% if current_user.liked_posts.include?(post) %>
+    <%= link_to 'Unlike', like_path(post.likes.find_by(user: current_user)), method: :delete, data: {turbo_method: :delete}%>
+  <% else %>
+    <%= link_to 'Like', likes_path(likeable_id: post.id, likeable_type: 'post'), method: :post, data: {turbo_method: :post} %> ·
+  <% end %>
+  <%= link_to "Comment", new_post_comment_path(post) %>
+</div>
+<div>
+  <% post.comments.where(comment_reply_id: nil).order(:created_at).each do |comment| %>
+    <%= render comment %>
+    <div>
+      <%= render comment.comment_replies.order(:created_at), as: :comment %>
+    </div>
+  <% end %>
+</div>
+<div>
+  <%= image_tag current_user.profile.profile_image.variant(resize_to_limit: [nil, 30]) %>
+  <%= link_to "Comment", new_post_comment_path(post) %> as <%= current_user.profile.name %>
+</div>
