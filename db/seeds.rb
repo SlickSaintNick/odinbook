@@ -32,26 +32,46 @@ Rails.logger.info "Created #{User.count} users"
 
 Profile.destroy_all
 
+profile_image1 = Rails.root.join('db/images/profile_image1.png').open
+profile_image2 = Rails.root.join('db/images/profile_image2.png').open
+profile_image3 = Rails.root.join('db/images/profile_image3.png').open
+profile_image4 = Rails.root.join('db/images/profile_image4.png').open
+profile_image5 = Rails.root.join('db/images/profile_image5.png').open
+
 test_user.profile = Profile.new(
   name: 'Test Name',
   bio: 'Test Bio'
 )
+test_user.profile.profile_image = profile_image1
+test_user.profile.save
+
 homer.profile = Profile.new(
   name: 'Homer Simpson',
   bio: "Doughnut enthusiast, nuclear safety inspector, and proud father of three. D'oh! 🍩👨‍👩‍👧‍👦"
 )
+homer.profile.profile_image = profile_image2
+homer.profile.save
+
 marge.profile = Profile.new(
   name: 'Marge Simpson',
   bio: 'Homemaker, loving wife, and devoted mom. Always keeping Springfield together with love and hairspray! 💇‍♀️💖'
 )
+marge.profile.profile_image = profile_image3
+marge.profile.save
+
 bart.profile = Profile.new(
   name: 'Bart Simpson',
   bio: 'Skateboarding troublemaker, prankster extraordinaire, and expert in staying ten steps ahead of detention. Eat my shorts! 🛹😎'
 )
+bart.profile.profile_image = profile_image4
+bart.profile.save
+
 monty.profile = Profile.new(
   name: 'Monty Burns',
   bio: 'Billionaire tycoon, owner of the Springfield Nuclear Power Plant, and connoisseur of evil schemes. Excellent... 😈💰'
 )
+monty.profile.profile_image = profile_image5
+monty.profile.save
 
 Rails.logger.info "Created #{Profile.count} profiles"
 
