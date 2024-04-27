@@ -1,6 +1,5 @@
 class ProfilesController < ApplicationController
-  before_action :set_following_profiles, only: [:index, :show]
-  before_action :set_follower_profiles, only: [:show]
+  before_action :find_profile_groups, only: [:index, :show]
 
   def index
     @not_followed = User.where.not(id: (current_user.following_user_ids + [current_user.id]))
@@ -40,14 +39,18 @@ class ProfilesController < ApplicationController
 
   private
 
-  def set_following_profiles
-    @following = current_user.followed_users.where(follows: { status: 'accepted_follow' })
+  def find_profile_groups
+    @follow_requests = current_user.following_users.where(follows: { status: 'pending_follow' })
+    @followers = current_user.following_users.where(follows: { status: 'accepted_follow' })
+
     @pending_follows = current_user.followed_users.where(follows: { status: 'pending_follow' })
+    @following = current_user.followed_users.where(follows: { status: 'accepted_follow' })
+
+    @not_following = find_not_following(@pending_follows)
   end
 
-  def set_follower_profiles
-    @followers = current_user.following_users.where(follows: { status: 'accepted_follow' })
-    @pending_followers = current_user.following_users.where(follows: { status: 'pending_follow' })
+  def find_not_following(pending_follows)
+    (User.where.not(id: (current_user.following_user_ids + [current_user.id])) + pending_follows).uniq
   end
 
   def profile_params

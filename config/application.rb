@@ -32,6 +32,7 @@ module Odinbook
         system("bundle exec rubocop -A --fail-level=E #{parsable_files.shelljoin}", exception: true)
       end
     end
+    # Uncomment if libvips is unavailable, to use ImageMagick:
     # config.active_storage.variant_processor = :mini_magick
     # config.active_storage.analyzers = [
     #   ActiveStorage::Analyzer::ImageAnalyzer::ImageMagick,

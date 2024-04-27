@@ -1,15 +1,13 @@
 <div>
   <div>
-    <% if post.user.profile.profile_image.present? %>
-      <%= image_tag post.user.profile.profile_image.variant(resize_to_limit: [nil, 50]) %>
-    <% end %>
+    <%= profile_image(user: post.user, image_height: 36) %>
   </div>
   <div>
     <%= post.user.profile.name %>
   </div>
   <div>
     <%= format_time(post.created_at) %> ·
-    <%= post.status.split("_")[0].capitalize %> ·
+    <%= format_status(post.status) %> ·
     <% if post.user_id == current_user.id %>
       <%= link_to "Edit", edit_post_path(post) %> · <%= link_to "Delete", post_path(post), method: :delete, data: {turbo_method: :delete} %>
     <% end %>
@@ -18,12 +16,10 @@
 
 <div>
   <%= post.body %>
-  <% if post.post_image.present? %>
-    <%= image_tag post.post_image.variant(resize_to_limit: [100, nil]) %>
-  <% end %>
+  <%= post_image(post: post, image_width: 500) %>
 </div>
 <div>
-  👍<%= post.likers.count %> · <%= post.comments.count %> comments
+  <%= post.likers.count %> <%= image_tag 'thumbs_up.svg', size: '18x18' %> · <%= post.comments.count %> comments
 </div>
 
 <div>
@@ -43,6 +39,6 @@
   <% end %>
 </div>
 <div>
-  <%= image_tag current_user.profile.profile_image.variant(resize_to_limit: [nil, 30]) %>
+  <%= profile_image(user: current_user, image_height: 32) %>
   <%= link_to "Comment", new_post_comment_path(post) %> as <%= current_user.profile.name %>
 </div>

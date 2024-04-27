@@ -1,7 +1,5 @@
 <div>
-  <% if @profile.profile_image.present? %>
-    <%= image_tag @profile.profile_image.variant(resize_to_limit: [nil, 200]) %>
-  <% end %>
+  <%= profile_image(user: @profile.user, image_height: 200) %>
 </div>
   <div>Name: <%= @profile.name %></div>
   <div>
@@ -25,8 +23,8 @@
       <h3>Following:</h3>
       <% @following.each do |following| %>
         <p><%= following.profile.name %></p>
-        <p><%= (current_user.followed_users.where(follows: { status: "accepted_follow" }) & following.followed_users.where(follows: { status: "accepted_follow" })).count %> mutual followers</p>
-        <p><%= link_to image_tag(following.profile.profile_image.variant(resize_to_limit: [nil, 50])), profile_path(following.profile) %>
+        <p><%= mutual_followers(current_user, following) %></p>
+        <p><%= link_to profile_image(user: following, image_height: 36), profile_path(following.profile) %>
         <p><%= link_to "Unfollow", follow_path(current_user.id, following_id: following.id), method: :delete, data: {turbo_method: :delete} %></p>
       <% end %>
     <% end %>
@@ -36,12 +34,15 @@
       <h3>Followers:</h3>
       <% @followers.each do |follower| %>
         <p><%= follower.profile.name %></p>
-        <p><%= (current_user.followed_users.where(follows: { status: "accepted_follow" }) & follower.followed_users.where(follows: { status: "accepted_follow" })).count %> mutual followers</p>
-        <p><%= link_to image_tag(follower.profile.profile_image.variant(resize_to_limit: [nil, 50])), profile_path(follower.profile) %>
-        <% unless @following.include?(follower) || @pending_follows.include?(follower) %>
+        <p><%= mutual_followers(current_user, follower) %></p>
+        <p><%= link_to profile_image(user: follower, image_height: 36), profile_path(follower.profile) %>
+        <% if @pending_follows.include?(follower) %>
+          <p>Follow request sent</p>
+        <% elsif @following.include?(follower) %>
+          <p><%= link_to "Remove", follow_path(current_user.id, follower_id: follower.id), method: :delete, data: {turbo_method: :delete} %></p>
+        <% else %>
           <p><%= link_to "Follow", follows_path(following_id: follower.id), method: :post, data: {turbo_method: :post} %></p>
         <% end %>
-        <p><%= link_to "Remove", follow_path(current_user.id, follower_id: follower.id), method: :delete, data: {turbo_method: :delete} %></p>
       <% end %>
     <% end %>
   </div>
