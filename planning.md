@@ -214,7 +214,7 @@ Reduce the model drastically to meet the spec. Documented in planning.dbml.
 - DONE There should be an index page for posts, which shows all the recent posts from the current user and users they are following.
 - DONE Users can comment on posts.
 - DONE Users can like posts.
-- Users can send follow requests to other users.
+- DONE Users can send follow requests to other users.
 - Users can create a profile with a profile picture. You may be able to get the profile picture when users sign in using OmniAuth. If this isn't the case you can use Gravatar to generate the photo.
 - A user's profile page should contain their profile information, profile photo, and posts.
 - There should be an index page for users, which shows all users and buttons for sending follow requests to users the user is not already following or have a pending request.
@@ -245,8 +245,8 @@ Reduce the model drastically to meet the spec. Documented in planning.dbml.
   - DONE profile#edit - linked from profile page (edit own profile)
   - DONE followed users and links to see their profile pages
   - DONE Own posts
-- DONE profile#index
-  - DONE List of all users, with buttons to send them follow requests
+- DONE DONE profile#index
+  - DONE DONE List of all users, with buttons to send them follow requests
   - DONE Add Profile photo to model, profile#show - Active Storage
 - Set up mailer for new users - welcome email
 - Test mail using letter_opener Gem
