@@ -3,14 +3,14 @@ class LikesController < ApplicationController
 
   def create
     if Like.exists?(user: current_user, likeable: @likeable)
-      redirect_to root_path
+      redirect_back_or_to root_path
       return
     end
 
     @like = @likeable.likes.build(user: current_user)
 
     if @like.save
-      redirect_to root_path
+      redirect_back_or_to root_path
     else
       render :new, status: :unprocessable_entity
     end
@@ -20,7 +20,7 @@ class LikesController < ApplicationController
     @like = Like.find(params[:id])
     @like.destroy
 
-    redirect_to root_path, status: :see_other
+    redirect_back_or_to root_path, status: :see_other
   end
 
   private

@@ -22,7 +22,7 @@ class ProfilesController < ApplicationController
     @profile = current_user.create_profile(profile_params)
 
     if @profile.save
-      redirect_to root_path
+      redirect_to profile_path
     else
       render :new, status: :unprocessable_entity
     end
@@ -31,7 +31,7 @@ class ProfilesController < ApplicationController
   def update
     @profile = Profile.find(params[:id])
     if @profile.update(profile_params)
-      redirect_to root_path
+      redirect_to profile_path
     else
       render :edit, status: :unprocessable_entity
     end
@@ -43,14 +43,11 @@ class ProfilesController < ApplicationController
     @follow_requests = current_user.following_users.where(follows: { status: 'pending_follow' })
     @followers = current_user.following_users.where(follows: { status: 'accepted_follow' })
 
-    @pending_follows = current_user.followed_users.where(follows: { status: 'pending_follow' })
+    @requested_to_follow = current_user.followed_users.where(follows: { status: 'pending_follow' })
     @following = current_user.followed_users.where(follows: { status: 'accepted_follow' })
 
-    @not_following = find_not_following(@pending_follows)
-  end
-
-  def find_not_following(pending_follows)
-    (User.where.not(id: (current_user.following_user_ids + [current_user.id])) + pending_follows).uniq
+    @not_following = (User.where.not(id:
+      (current_user.following_user_ids + [current_user.id])) + @requested_to_follow).uniq
   end
 
   def profile_params

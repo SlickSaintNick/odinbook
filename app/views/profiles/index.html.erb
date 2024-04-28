@@ -21,7 +21,7 @@
       <%= profile_image(user: follow, image_height: 100) %>
       <%= follow.profile.name %>
       <%= mutual_followers(current_user, follow) %>
-      <% if current_user.followed_users.include?(follow) %>
+      <% if @requested_to_follow.include?(follow) %>
         <p>Follow request sent</p>
       <% else %>        
         <%= link_to "Follow", follows_path(following_id: follow.id), method: :post, data: {turbo_method: :post} %>
@@ -40,6 +40,3 @@
     <% end %>
   </div>
 <% end %>
-
-
-

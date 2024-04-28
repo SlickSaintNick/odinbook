@@ -5,7 +5,7 @@ class FollowsController < ApplicationController
   def create
     @follow = current_user.follows.build(followed_user_id: params[:following_id])
     if @follow.save
-      redirect_to root_path
+      redirect_back_or_to root_path
     else
       render :new, status: :unprocessable_entity
     end
@@ -14,12 +14,12 @@ class FollowsController < ApplicationController
   def update
     @follow = Follow.find(params[:id])
     @follow.update(status: params[:status])
-    redirect_to root_path, status: :see_other
+    redirect_back_or_to root_path, status: :see_other
   end
 
   def destroy
     @follow&.destroy
-    redirect_to root_path, status: :see_other
+    redirect_back_or_to root_path, status: :see_other
   end
 
   private
@@ -27,7 +27,7 @@ class FollowsController < ApplicationController
   def build_follow
     if params[:following_id].blank? || Follow.exists?(following_user_id: current_user,
                                                       followed_user_id: params[:following_id])
-      redirect_to root_path
+      redirect_back_or_to root_path
       return
     end
 

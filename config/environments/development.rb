@@ -37,7 +37,7 @@ Rails.application.configure do
   config.active_storage.service = :local
 
   # Don't care if the mailer can't send.
-  config.action_mailer.raise_delivery_errors = false
+  config.action_mailer.raise_delivery_errors = true
 
   config.action_mailer.perform_caching = false
 
@@ -73,6 +73,18 @@ Rails.application.configure do
 
   # Raise error when a before_action's only/except options reference missing actions
   config.action_controller.raise_on_missing_callback_actions = true
+
+  config.action_mailer.delivery_method = :smtp
+
+  config.action_mailer.smtp_settings = {
+    address: 'smtp.gmail.com',
+    port: 587,
+    domain: 'odinbook.com',
+    authentication: 'plain',
+    enable_starttls_auto: true,
+    user_name: ENV.fetch('GMAIL_USERNAME', nil),
+    password: ENV.fetch('GMAIL_APP_PASSWORD', nil)
+  }
 
   config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
 end

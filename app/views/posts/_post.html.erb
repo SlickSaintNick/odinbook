@@ -15,8 +15,8 @@
 </div>
 
 <div>
+  <%= post_image(post: post, image_width: 500) %></br>
   <%= post.body %>
-  <%= post_image(post: post, image_width: 500) %>
 </div>
 <div>
   <%= post.likers.count %> <%= image_tag 'thumbs_up.svg', size: '18x18' %> · <%= post.comments.count %> comments
