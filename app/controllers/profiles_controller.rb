@@ -11,7 +11,7 @@ class ProfilesController < ApplicationController
   end
 
   def new
-    @profile = current_user.create_profile
+    @profile = Profile.new
   end
 
   def edit
@@ -22,8 +22,7 @@ class ProfilesController < ApplicationController
     @profile = current_user.create_profile(profile_params)
 
     if @profile.save
-      UserMailer.welcome(current_user).deliver_now
-      redirect_to profile_path
+      redirect_to root_path
     else
       render :new, status: :unprocessable_entity
     end

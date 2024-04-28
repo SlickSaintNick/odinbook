@@ -74,17 +74,24 @@ Rails.application.configure do
   # Raise error when a before_action's only/except options reference missing actions
   config.action_controller.raise_on_missing_callback_actions = true
 
-  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.delivery_method = :letter_opener
+  config.action_mailer.perform_deliveries = true
 
-  config.action_mailer.smtp_settings = {
-    address: 'smtp.gmail.com',
-    port: 587,
-    domain: 'odinbook.com',
-    authentication: 'plain',
-    enable_starttls_auto: true,
-    user_name: ENV.fetch('GMAIL_USERNAME', nil),
-    password: ENV.fetch('GMAIL_APP_PASSWORD', nil)
-  }
+  LetterOpener.configure do |config|
+    config.file_uri_scheme = 'file://///wsl$/Ubuntu-22.04'
+  end
+
+  # config.action_mailer.delivery_method = :smtp
+
+  # config.action_mailer.smtp_settings = {
+  #   address: 'smtp.gmail.com',
+  #   port: 587,
+  #   domain: 'odinbook.com',
+  #   authentication: 'plain',
+  #   enable_starttls_auto: true,
+  #   user_name: ENV.fetch('GMAIL_USERNAME', nil),
+  #   password: ENV.fetch('GMAIL_APP_PASSWORD', nil)
+  # }
 
   config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
 end
