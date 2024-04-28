@@ -1,4 +1,8 @@
 module ApplicationHelper
+  def format_first_name(name)
+    name.split[0]
+  end
+
   def format_status(status)
     status.split('_')[0].capitalize
   end

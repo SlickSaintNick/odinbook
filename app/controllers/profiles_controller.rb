@@ -22,6 +22,7 @@ class ProfilesController < ApplicationController
     @profile = current_user.create_profile(profile_params)
 
     if @profile.save
+      UserMailer.welcome(current_user).deliver_now
       redirect_to profile_path
     else
       render :new, status: :unprocessable_entity

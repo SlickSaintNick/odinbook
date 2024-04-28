@@ -3,6 +3,8 @@ class User < ApplicationRecord
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
+  after create :send_welcome_email
+
   has_one :profile, dependent: :destroy
 
   has_many :follows,
@@ -24,4 +26,10 @@ class User < ApplicationRecord
   has_many :likes, dependent: :destroy
   has_many :liked_posts, through: :likes, source: :likeable, source_type: 'Post'
   has_many :liked_comments, through: :likes, source: :likeable, source_type: 'Comment'
+
+  private
+
+  def send_welcome_email
+    UserMailer.welcome(self).deliver_now
+  end
 end

@@ -4,9 +4,16 @@ class UserMailer < ApplicationMailer
   #
   #   en.user_mailer.welcome.subject
   #
-  def welcome
-    @greeting = 'Hi'
+  def welcome(user)
+    @user = user
+    @first_name = format_first_name(user.profile.name)
 
-    mail to: 'to@example.org'
+    mail to: @user.email, subject: "Welcome to OdinBook, #{@first_name}!"
+  end
+
+  private
+
+  def format_first_name(name)
+    name.split[0]
   end
 end
