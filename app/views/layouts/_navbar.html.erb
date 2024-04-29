@@ -1,14 +1,24 @@
-<% if current_user %>
-  <%= link_to "Home", root_path %> | 
-  <%= link_to "Back", :back %> | 
-  <% if current_user.profile %>
-    <%= link_to "My Profile", profile_path(current_user.profile) %> |
-    <%= link_to "Edit Profile", edit_profile_path(current_user.profile) %> | 
+<div class="navbar">
+  <% if current_user %>
+    <div class="navbar-left">
+      <%= link_to image_tag("icons/odin-logo.svg", class: "icon", alt: "Home"), root_path %>
+      <%= link_to image_tag("icons/back.svg", class: "icon", alt: "Back"), :back %>
+    </div>
+    <div class="navbar-center">
+      <% if current_user.profile %>
+        <%= link_to image_tag("icons/home.svg", class: "icon", alt: "Home"), root_path %>
+        <%= link_to image_tag("icons/my-profile.svg", class: "icon", alt: "My Profile"), profile_path(current_user.profile) %>
+      <% else %>
+        <%= link_to image_tag("icons/create-profile.svg", class: "icon", alt: "Create Profile"), new_profile_path %>
+      <% end %>
+      <%= link_to image_tag("icons/user-index.svg", class: "icon", alt: "User Index"), profiles_path %>
+    </div>
+    <div class="navbar-right">
+      <%= link_to image_tag("icons/sign-out.svg", class: "icon", alt: "Sign out"), destroy_user_session_path, method: :delete, data: { turbo_method: :delete } %>
+    </div>
   <% else %>
-    <%= link_to "Create your profile", new_profile_path %> | 
+    <div class="navbar-right">
+      <%= link_to image_tag("icons/sign-in.svg", class: "icon", alt: "Sign in"), new_user_session_path %>
+    </div>
   <% end %>
-  <%= link_to "User Index", profiles_path %> | 
-  <%= link_to "Sign out", destroy_user_session_path, method: :delete, data: { turbo_method: :delete } %>
-<% else %>
-  <%= button_to "Sign in", new_user_session_path %>
-<% end %>
+</div>

@@ -1,0 +1,72 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --color-bg: #D8DEE6;
+  --color-primary: #E3B261;
+  --color-secondary: #007991;
+  --color-accent: #45050C;
+  --color-shadow: #A78347;
+  --color-txt-dark: #000000;
+  --color-txt-light: #FFFFFF;
+}
+
+/* Set the size of images */
+img.icon {
+  height: 2.5rem;
+  color: var(--color-primary);
+  padding: 0 0.5rem 0 0.5rem;
+}
+
+.container img.profile-picture-small {
+  height: 3rem;
+}
+
+.container img.profile-picture-medium {
+  height: 3.5rem;
+}
+
+.container img.profile-picture-large {
+  height: 4rem;
+}
+
+/* ---------------------- */
+
+body {
+  height: 100vh;
+  /* fallback if browser incompatible with dvh */
+  height: 100svh;
+  background: var(--color-bg);
+  font-family: "Verdana", sans-serif;
+  background-color: white;
+}
+
+.container {
+  display: flex;
+  justify-content: space-around;
+  gap: 2rem;
+  height: 100%;
+  color: var(--color-txt-dark);
+}
+
+.container .posts {
+  flex-grow: 4;
+  padding: 2rem;
+}
+
+.container .followers {
+  flex-basis: 12rem;
+  flex-grow: 1;
+  padding: 2rem;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 2rem 0 2rem;
+  color: var(--color-primary);
+
+}
