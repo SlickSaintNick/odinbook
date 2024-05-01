@@ -1,44 +1,48 @@
-<div>
-  <div>
-    <%= profile_image(user: post.user, image_height: 36) %>
+<div class="post">
+  <div class="post-header">
+    <div class="post-header-left">
+      <%= profile_image(user: post.user, class_list: 'profile-picture-medium') %>
+    </div>
+    <div class="post-header-right">
+      <div class="post-name">
+        <%= post.user.profile.name %>
+      </div>
+      <div class="post-details">
+        <%= format_time(post.created_at) %> ·
+        <%= format_status(post.status) %> ·
+        <% if post.user_id == current_user.id %>
+          <%= link_to "Edit", edit_post_path(post) %> · <%= link_to "Delete", post_path(post), method: :delete, data: {turbo_method: :delete} %>
+        <% end %>
+      </div>
+    </div>
   </div>
-  <div>
-    <%= post.user.profile.name %>
+  
+  <div class="post-body">
+    <%= post_image(post: post, class_list: "post-image") %></br>
+    <%= post.body %>
   </div>
-  <div>
-    <%= format_time(post.created_at) %> ·
-    <%= format_status(post.status) %> ·
-    <% if post.user_id == current_user.id %>
-      <%= link_to "Edit", edit_post_path(post) %> · <%= link_to "Delete", post_path(post), method: :delete, data: {turbo_method: :delete} %>
+  <div class="post-counts">
+    <div><%= image_tag 'thumbs_up.svg', size: '18x18' %> <span class="post-likers-count"><%= post.likers.count %></span></div>
+    <%= pluralize(post.comments.count, 'comment') if post.comments.count > 0 %>
+  </div>
+  <div class="post-buttons">
+    <% if current_user.liked_posts.include?(post) %>
+      <%= link_to 'Unlike', like_path(post.likes.find_by(user: current_user)), method: :delete, data: {turbo_method: :delete}%>
+    <% else %>
+      <%= link_to "Like", likes_path(likeable_id: post.id, likeable_type: 'post'), method: :post, data: {turbo_method: :post} %>
+    <% end %>
+    <%= link_to "Comment", new_post_comment_path(post) %>
+  </div>
+  <div class="post-comments">
+    <% post.comments.where(comment_reply_id: nil).order(:created_at).each do |comment| %>
+      <%= render comment %>
+      <div class="post-comment-replies">
+        <%= render comment.comment_replies.order(:created_at), as: :comment %>
+      </div>
     <% end %>
   </div>
-</div>
-
-<div>
-  <%= post_image(post: post, image_width: 500) %></br>
-  <%= post.body %>
-</div>
-<div>
-  <%= post.likers.count %> <%= image_tag 'thumbs_up.svg', size: '18x18' %> · <%= post.comments.count %> comments
-</div>
-
-<div>
-  <% if current_user.liked_posts.include?(post) %>
-    <%= link_to 'Unlike', like_path(post.likes.find_by(user: current_user)), method: :delete, data: {turbo_method: :delete}%>
-  <% else %>
-    <%= link_to 'Like', likes_path(likeable_id: post.id, likeable_type: 'post'), method: :post, data: {turbo_method: :post} %> ·
-  <% end %>
-  <%= link_to "Comment", new_post_comment_path(post) %>
-</div>
-<div>
-  <% post.comments.where(comment_reply_id: nil).order(:created_at).each do |comment| %>
-    <%= render comment %>
-    <div>
-      <%= render comment.comment_replies.order(:created_at), as: :comment %>
-    </div>
-  <% end %>
-</div>
-<div>
-  <%= profile_image(user: current_user, image_height: 32) %>
-  <%= link_to "Comment", new_post_comment_path(post) %> as <%= current_user.profile.name %>
+  <div class="post-user-comment">
+    <%= profile_image(user: current_user, class_list: "profile-picture-medium") %>
+    <%= link_to "Comment", new_post_comment_path(post) %> as <%= current_user.profile.name %>
+  </div>
 </div>

@@ -1,5 +1,5 @@
 <div>
-  <%= profile_image(user: @profile.user, image_height: 200) %>
+  <%= profile_image(user: @profile.user, class_list: "profile-picture-large") %>
 </div>
   <div>Name: <%= @profile.name %></div>
   <div>
@@ -24,7 +24,7 @@
       <% @following.each do |following| %>
         <p><%= following.profile.name %></p>
         <p><%= mutual_followers(current_user, following) %></p>
-        <p><%= link_to profile_image(user: following, image_height: 36), profile_path(following.profile) %>
+        <p><%= link_to profile_image(user: following, class_list: "profile-picture-medium"), profile_path(following.profile) %>
         <p><%= link_to "Unfollow", follow_path(current_user.id, following_id: following.id), method: :delete, data: {turbo_method: :delete} %></p>
       <% end %>
     <% end %>
@@ -35,8 +35,8 @@
       <% @followers.each do |follower| %>
         <p><%= follower.profile.name %></p>
         <p><%= mutual_followers(current_user, follower) %></p>
-        <p><%= link_to profile_image(user: follower, image_height: 36), profile_path(follower.profile) %>
-        <% if @pending_follows.include?(follower) %>
+        <p><%= link_to profile_image(user: follower, class_list: "profile-picture-medium"), profile_path(follower.profile) %>
+        <% if !@pending_follows.nil? && @pending_follows.include?(follower) %>
           <p>Follow request sent</p>
         <% elsif @following.include?(follower) %>
           <p><%= link_to "Remove", follow_path(current_user.id, follower_id: follower.id), method: :delete, data: {turbo_method: :delete} %></p>

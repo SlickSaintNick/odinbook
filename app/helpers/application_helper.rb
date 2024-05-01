@@ -10,13 +10,13 @@ module ApplicationHelper
     elsif time < 2.months.ago
       time.strftime('%-d %B at %I:%M')
     elsif time < 1.week.ago
-      "#{((now - time) / (60 * 60 * 24 * 7)).round}w"
+      "#{((now - time) / (60 * 60 * 24 * 7)).round} w"
     elsif time < 1.day.ago
-      "#{((now - time) / (60 * 60 * 24)).round}d"
+      "#{((now - time) / (60 * 60 * 24)).round} d"
     elsif time < 1.hour.ago
-      "#{((now - time) / (60 * 60)).round}h"
+      "#{((now - time) / (60 * 60)).round} h"
     elsif time < now
-      "#{((now - time) / 60).round}m"
+      "#{((now - time) / 60).round} m"
     end
   end
 
@@ -31,19 +31,16 @@ module ApplicationHelper
     pluralize(mutual_count, 'mutual follower')
   end
 
-  def post_image(post:, image_width:, image_height: nil)
+  def post_image(post:, image_width: nil, image_height: nil, class_list: nil)
     image = post.post_image
     return if image.blank?
 
-    image_tag(image.variant(resize_to_limit: [image_width, image_height]), alt: nil)
+    image_tag(image.variant(resize_to_limit: [image_width, image_height]), alt: nil, class: class_list)
   end
 
-  def profile_image(user:, image_width: nil, image_height: nil)
-    image = user.profile.profile_image
-    if image.blank?
-      image_tag('profile_image_default.png', width: image_width, height: image_height, alt: user.profile.name)
-    else
-      image_tag(image.variant(resize_to_limit: [image_width, image_height]), alt: user.profile.name)
-    end
+  def profile_image(user:, class_list: nil)
+    image = user.profile.profile_image.presence || 'profile_image_default.png'
+    image_tag(image.variant(resize_to_fill: [200, 200, { crop: :low }]), alt: user.profile.name,
+                                                                         class: class_list)
   end
 end

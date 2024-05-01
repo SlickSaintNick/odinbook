@@ -12,7 +12,9 @@ class Profile < ApplicationRecord
   # has_one_attached :profile_image do |attachable|
   #   attachable.variant :thumb, resize: '50x50'
   # end
-  has_one_attached :profile_image
+  has_one_attached :profile_image do |attachable|
+    attachable.variant :thumb, resize_and_pad: [200, 200, { crop: :none }]
+  end
 
   private
 

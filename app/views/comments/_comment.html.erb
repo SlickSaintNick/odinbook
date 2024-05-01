@@ -1,26 +1,30 @@
-<div>
-  <%= profile_image(user: comment.user, image_height: 32) %>
-</div>
-<div>
-  <%= comment.user.profile.name %><br>
-  <%= comment.body %>
-</div>
-<div>
-  <%= format_time(comment.created_at) %> ·
+<div class="comment">
+  <div class="comment-block">
+    <div class="comment-block-left">
+      <%= profile_image(user: comment.user, class_list: "profile-picture-small") %>
+    </div>
+    <div class="comment-block-right">
+      <div class="comment-name"><%= comment.user.profile.name %></div>
+      <div class="comment-body"><%= comment.body %></div>
+    </div>
+  </div>
+  <div class="comment-details">
+    <%= format_time(comment.created_at) %>
   
-  <% if current_user.liked_comments.include?(comment) %>
-    <%= link_to 'Unlike', like_path(comment.likes.find_by(user: current_user)), method: :delete, data: {turbo_method: :delete}%> ·
-  <% else %>
-    <%= link_to 'Like', likes_path(likeable_id: comment.id, likeable_type: 'comment'), method: :post, data: {turbo_method: :post} %> ·
-  <% end %>
+    <% if current_user.liked_comments.include?(comment) %>
+      <%= link_to 'Unlike', like_path(comment.likes.find_by(user: current_user)), method: :delete, data: {turbo_method: :delete}%>
+    <% else %>
+      <%= link_to 'Like', likes_path(likeable_id: comment.id, likeable_type: 'comment'), method: :post, data: {turbo_method: :post} %>
+    <% end %>
   
-  <%= link_to "Reply", new_post_comment_path(comment.post, reply_to_comment: comment.id) %>
-  <% if comment.likers.count > 0 then %>
-     · <%= comment.likers.count %> <%= image_tag 'thumbs_up.svg', size: '18x18' %>
-  <% end %>
+    <%= link_to "Reply", new_post_comment_path(comment.post, reply_to_comment: comment.id) %>
+    <% if comment.likers.count > 0 then %>
+      <div><%= comment.likers.count %> <%= image_tag 'thumbs_up.svg', size: '18x18' %></div>
+    <% end %>
   
-  <% if comment.user_id == current_user.id %>
-     · <%= link_to "Edit", edit_post_comment_path(comment.post, comment) %>
-     · <%= link_to "Delete", post_comment_path(comment.post, comment), method: :delete, data: {turbo_method: :delete} %>
-  <% end %>
+    <% if comment.user_id == current_user.id %>
+      <%= link_to "Edit", edit_post_comment_path(comment.post, comment) %>
+      <%= link_to "Delete", post_comment_path(comment.post, comment), method: :delete, data: {turbo_method: :delete} %>
+    <% end %>
+  </div>
 </div>
