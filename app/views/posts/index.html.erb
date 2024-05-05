@@ -7,7 +7,7 @@
           <p>What's on your mind, <%= current_user.profile.name.split[0] %>?</p>
           <%= link_to "New Post", new_post_path %>
         <% else %>
-          <%= link_to "Create your profile", new_profile_path %>
+          <%= link_to "Create your profile", new_profile_path, class: "link-button-success" %>
         <% end %>
       </div>
       <div class="posts-list">

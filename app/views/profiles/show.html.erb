@@ -1,68 +1,102 @@
-<div>
-  <%= profile_image(user: @profile.user, class_list: "profile-picture-large") %>
-</div>
-  <div>Name: <%= @profile.name %></div>
-  <div>
-    <% if @followers.count > 0 %>
-      <%= @followers.count %> followers
-    <% end %>
+<div class="profile-header">
+  <div class="profile-header-left">
+    <%= profile_image(user: @profile.user, class_list: "profile-picture-large") %>
   </div>
-  <div>Bio: <%= @profile.bio %></div>
-  <div>Email: <%= @profile.user.email %></div>
-  <div>Member since: <%= @profile.user.created_at.strftime('%-d %B %Y') %></div>
-  <div>
-    <% if @profile.user_id == current_user.id %>
-      <%= link_to "Edit Your Profile", edit_profile_path(current_user.profile) %>
-    <% end %>
-  </div>
-</div>
-
-<% if @profile.user.id == current_user.id %>
-  <div>
-    <% unless @following.nil? || @following.empty? %>
-      <h3>Following:</h3>
-      <% @following.each do |following| %>
-        <p><%= following.profile.name %></p>
-        <p><%= mutual_followers(current_user, following) %></p>
-        <p><%= link_to profile_image(user: following, class_list: "profile-picture-medium"), profile_path(following.profile) %>
-        <p><%= link_to "Unfollow", follow_path(current_user.id, following_id: following.id), method: :delete, data: {turbo_method: :delete} %></p>
+  <div class="profile-header-right">
+    <div class="profile-name"><%= profile_name(user: @profile.user) %></div>
+    <div class="followers-count">
+      <% if @followers.count > 0 %>
+        <%= pluralize(@followers.count, "follower") %>
       <% end %>
-    <% end %>
+    </div>
   </div>
-  <div>
-    <% unless @followers.nil? || @followers.empty? %>
-      <h3>Followers:</h3>
-      <% @followers.each do |follower| %>
-        <p><%= follower.profile.name %></p>
-        <p><%= mutual_followers(current_user, follower) %></p>
-        <p><%= link_to profile_image(user: follower, class_list: "profile-picture-medium"), profile_path(follower.profile) %>
-        <% if !@pending_follows.nil? && @pending_follows.include?(follower) %>
-          <p>Follow request sent</p>
-        <% elsif @following.include?(follower) %>
-          <p><%= link_to "Remove", follow_path(current_user.id, follower_id: follower.id), method: :delete, data: {turbo_method: :delete} %></p>
-        <% else %>
-          <p><%= link_to "Follow", follows_path(following_id: follower.id), method: :post, data: {turbo_method: :post} %></p>
+</div>
+  
+<div class="container">
+  <div class="profile-body-left scrollable-content">
+    <div class="profile-heading">Bio</div>
+    <div class="profile-text"><%= @profile.bio %></div>
+    <div class="profile-heading">Email</div>
+    <div class="profile-text"><%= mail_to @profile.user.email %></div>
+    <div class="profile-text">Member since <%= @profile.user.created_at.strftime('%-d %B %Y') %></div>
+    <div class="profile-button">
+      <% if @profile.user_id == current_user.id %>
+        <%= link_to "Edit Your Profile", edit_profile_path(current_user.profile) %>
+      <% end %>
+    </div>
+    <% if @profile.user.id == current_user.id %>
+      <% unless @follow_requests.nil? || @follow_requests.empty? %>
+        <h3>Pending Follow Requests:</h3>
+        <% @follow_requests.each do |follower| %>
+          <div class="profile-follower">
+            <div class="profile-follower-left">
+              <%= link_to profile_image(user: follower, class_list: "profile-picture-square"), profile_path(follower.profile) %>
+            </div>
+            <div class="profile-follower-right">
+              <div class="profile-follower-right-header">
+                <div class="profile-follower-name"><%= profile_name(user: follower) %></div>
+                <div class="profile-follower-created"><%= format_time(@profile.user.followers.where(following_user_id: follower).first.created_at) %></div>
+              </div>
+              <div class="profile-follower-mutual"><%= mutual_followers(current_user, follower) %></div>
+              <div class="profile-follower-buttons">
+                <%= link_to "Reject", follow_path(current_user.id, follower_id: follower.id), method: :delete, data: {turbo_method: :delete}, class: "link-button-secondary button-small" %>
+                <%= link_to "Accept",
+                    follow_path(Follow.find_by(following_user_id: follower.id, followed_user_id: current_user.id), status: "accepted_follow"),
+                    method: :put, data: {turbo_method: :patch},
+                    action: :update, class: "link-button-primary button-small" %>
+              </div>
+            </div>
+          </div>
         <% end %>
       <% end %>
+      <div>
+        <% unless @following.nil? || @following.empty? %>
+          <h3>Following:</h3>
+          <% @following.each do |following| %>
+            <div class="profile-follower">
+              <div class="profile-follower-left">
+                <%= link_to profile_image(user: following, class_list: "profile-picture-square"), profile_path(following.profile) %>
+              </div>
+              <div class="profile-follower-right">
+                <div class="profile-follower-name"><%= profile_name(user: following) %></div>
+              </div>
+              <div class="profile-follower-buttons">
+                <%= link_to "Unfollow", follow_path(current_user.id, following_id: following.id), method: :delete, data: {turbo_method: :delete}, class: "link-button-secondary button-small" %>
+              </div>
+            </div>
+          <% end %>
+        <% end %>
+      </div>
+      <div>
+        <% unless @followers.nil? || @followers.empty? %>
+          <h3>Followers:</h3>
+          <% @followers.each do |follower| %>
+            <div class="profile-follower">
+              <div class="profile-follower-left">
+                <%= link_to profile_image(user: follower, class_list: "profile-picture-medium"), profile_path(follower.profile) %>
+              </div>
+              <div class="profile-follower-right">
+                <div class="profile-follower-name"><%= follower.profile.name %></div>
+              </div>
+              <div class="profile-follower-mutual"><%= mutual_followers(current_user, follower) %></div>
+              <div class="profile-follower-buttons">
+                <% if !@pending_follows.nil? && @pending_follows.include?(follower) %>
+                  Follow request sent
+                <% elsif @following.include?(follower) %>
+                  <%= link_to "Remove", follow_path(current_user.id, follower_id: follower.id), method: :delete, data: {turbo_method: :delete}, class: "link-button-secondary button-small" %>
+                <% else %>
+                  <%= link_to "Follow", follows_path(following_id: follower.id), method: :post, data: {turbo_method: :post}, class: "link-button-primary button-small" %>
+                <% end %>
+              </div>
+            </div>
+          <% end %>
+        <% end %>
+      </div>
     <% end %>
   </div>
-  <div>
-    <% unless @pending_followers.nil? || @pending_followers.empty? %>
-      <h3>Pending Follow Requests:</h3>
-      <% @pending_followers.each do |follower| %>
-        <p><%= follower.profile.name %></p>
-        <p><%= (current_user.followed_users.where(follows: { status: "accepted_follow" }) & follower.followed_users.where(follows: { status: "accepted_follow" })).count %> mutual followers</p>
-        <%= image_tag follower.profile.profile_image.variant(resize_to_limit: [nil, 50]) %>
-        <p><%= link_to "Reject", follow_path(current_user.id, follower_id: follower.id), method: :delete, data: {turbo_method: :delete} %></p>
-        <p><%= link_to "Accept", 
-            follow_path(Follow.find_by(following_user_id: follower.id, followed_user_id: current_user.id), status: "accepted_follow"), 
-            method: :put, data: {turbo_method: :patch},
-            action: :update %></p>
-      <% end %>
-    <% end %>
+  <div class="profile-body-right scrollable-content">
+    <div class="posts-wrapper">
+      <div class="posts-list"><%= render @posts %></div>
+    </div>
   </div>
-<% end %>
-
-<div>
-  <%= render @posts %>
 </div>

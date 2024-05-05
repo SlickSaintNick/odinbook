@@ -1,0 +1,6 @@
+<div class="follower-button">
+            <%= link_to profile_path(follower.profile) do %>
+              <%= profile_image(user: follower, class_list: "profile-picture-small") %>
+              <div class="follower-button-name"><%= follower.profile.name %></div>
+            <% end %>
+          </div>

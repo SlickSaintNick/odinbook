@@ -2,14 +2,14 @@
   <h2>Follow requests:</h2>
   <div>
     <% @follow_requests.each do |follow| %>
-      <%= profile_image(user: follow, image_height: 100) %>
-      <%= follow.profile.name %>
+      <%= profile_image(user: follow, class_list: "profile-image-large") %>
+      <%= profile_name(user: follow) %>
       <%= mutual_followers(current_user, follow) %>
       <%= link_to "Accept",
-                follow_path(Follow.find_by(following_user_id: follower.id, followed_user_id: current_user.id), status: "accepted_follow"),
+                follow_path(Follow.find_by(following_user_id: follow.id, followed_user_id: current_user.id), status: "accepted_follow"),
                 method: :put, data: {turbo_method: :patch},
                 action: :update %>
-      <%= link_to "Delete", follow_path(current_user.id, follower_id: follower.id), method: :delete, data: {turbo_method: :delete} %>
+      <%= link_to "Delete", follow_path(current_user.id, follower_id: follow.id), method: :delete, data: {turbo_method: :delete} %>
     <% end %>
   </div>
 <% end %>
@@ -18,8 +18,8 @@
   <h2>People you may know:</h2>
   <div>
     <% @not_following.each do |follow| %>
-      <%= profile_image(user: follow, image_height: 100) %>
-      <%= follow.profile.name %>
+      <%= profile_image(user: follow, class_list: "profile-image-large") %>
+      <%= profile_name(user: follow) %>
       <%= mutual_followers(current_user, follow) %>
       <% if @requested_to_follow.include?(follow) %>
         <p>Follow request sent</p>
@@ -34,7 +34,7 @@
   <h2>Following:</h2>
   <div>
     <% @following.each do |follow| %>
-      <%= link_to profile_image(user: follow, image_height: 100), profile_path(follow.profile) %>
+      <%= link_to profile_image(user: follow, class_list: "profile-image-large"), profile_path(follow.profile) %>
       <p><%= follow.profile.name %></p>
       <p><%= mutual_followers(current_user, follow) %></p>
     <% end %>

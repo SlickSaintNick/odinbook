@@ -1,19 +1,31 @@
-<div>
-  <%= form_with model: @profile do |form| %>
-    <div>
-      <%= form.label :name %><br>
-      <%= form.text_field :name %>
+<div class="container">
+  <div class="edit-profile">
+    <div class="edit-profile-form">
+      <%= form_with model: @profile do |form| %>
+        <div class="edit-profile-name">
+          <%= form.label :name, hidden: true %><br>
+          <%= form.text_field :name, placeholder: "Name" %>
+        </div>
+
+        <div class="fileinputs">
+          <%= form.label :profile_image, hidden: true %>
+          <%= form.file_field :profile_image, class: "file" %>
+          <div class="fakefile">
+            <input type="button" value="+ Upload Photo" class="fakefile-button"/>
+          </div>
+        </div>
+        <br>
+        <br>
+
+        <div class="edit-profile-bio">
+          <%= form.label :bio, hidden: true %>
+          <%= form.text_area :bio %>
+        </div>
+
+        <div class="actions-edit-profile">
+          <%= form.submit %>
+        </div>
+      <% end %>
     </div>
-    <div>
-      <%= form.label :profile_image %>
-      <%= form.file_field :profile_image %>
-    </div>
-    <div>
-      <%= form.label :bio %><br>
-      <%= form.text_area :bio, rows: "5" %>
-    </div>
-    <div>
-      <%= form.submit %>
-    </div>
-  <% end %>
+  </div>
 </div>

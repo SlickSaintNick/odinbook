@@ -1,49 +1,23 @@
-<% if current_user.followed_users.count.zero? %>
-  <p>Visit the User Index page to follow other users!</p>
-<% else %>
-  <div>
-    <% unless current_user.following_users.where(follows: { status: "pending_follow" }).count.zero? %>
-      <div class="follower-heading">Pending follow requests:</div>
-      <% current_user.following_users.where(follows: { status: "pending_follow" }).each do |follower| %>
-        <%= profile_image(user: follower, class_list: "profile-picture-small") %>
-        <%= follower.profile.name %> |
-        <%= link_to "Reject", follow_path(current_user.id, follower_id: follower.id), method: :delete, data: {turbo_method: :delete} %>
-        <%= link_to "Accept",
-            follow_path(Follow.find_by(following_user_id: follower.id, followed_user_id: current_user.id), status: "accepted_follow"),
-            method: :put, data: {turbo_method: :patch},
-            action: :update %>
+<div>
+  <% if current_user.followed_users.count.zero? %>
+    <p>Visit the <%= link_to "User Index", profiles_path %> page to follow other users!</p>
+  <% else %>
+    <div>
+      <% unless current_user.followed_users.where(follows: { status: "accepted_follow" }).count.zero? %>
+        <div class="follower-heading">Following</div>
+        <% current_user.followed_users.where(follows: { status: "accepted_follow" }).each do |follower| %>
+          <%= render partial: "followers/follower_button", locals: { follower: follower } %>
+        <% end %>
+      <% else %>
+        Your followed users will appear here once they accept your request.
       <% end %>
+    </div>
+  <% end %>
+  
+  <% unless current_user.following_users.where(follows: { status: "accepted_follow" }).count.zero? %>
+    <div class="follower-heading">Followers</div>
+    <% current_user.following_users.where(follows: { status: "accepted_follow" }).each do |follower| %>
+      <%= render partial: "followers/follower_button", locals: { follower: follower } %>
     <% end %>
-
-    <% unless current_user.followed_users.where(follows: { status: "pending_follow" }).count.zero? %>
-      <div class="follower-heading">You have requested to follow:</div>
-      <% current_user.followed_users.where(follows: { status: "pending_follow" }).each do |following| %>
-        <%= profile_image(user: following, class_list: "profile-picture-small") %>
-        <%= following.profile.name %> |
-        <%= link_to "Unfollow", follow_path(current_user.id, following_id: following.id), method: :delete, data: {turbo_method: :delete} %>
-      <% end %>
-    <% end %>
-
-    <% unless current_user.followed_users.where(follows: { status: "accepted_follow" }).count.zero? %>
-      <div class="follower-heading">Following:</div>
-      <% current_user.followed_users.where(follows: { status: "accepted_follow" }).each do |following| %>
-        <%= profile_image(user: following, class_list: "profile-picture-small") %>
-        <%= following.profile.name %> |
-        <%= link_to "Unfollow", follow_path(current_user.id, following_id: following.id), method: :delete, data: {turbo_method: :delete} %>
-      <% end %>
-    <% end %>
-  </div>
-<% end %>
-
-<% unless current_user.following_users.count.zero? %>
-  <div>
-    <% unless current_user.following_users.where(follows: { status: "accepted_follow" }).count.zero? %>
-      <div class="follower-heading">Followed by:</div>
-      <% current_user.following_users.where(follows: { status: "accepted_follow" }).each do |follower| %>
-        <%= profile_image(user: follower, class_list: "profile-picture-small") %>
-        <%= follower.profile.name %> |
-        <%= link_to "Remove", follow_path(current_user.id, follower_id: follower.id), method: :delete, data: {turbo_method: :delete} %>
-      <% end %>
-    <% end %>
-  </div>
-<% end %>
+  <% end %>
+</div>

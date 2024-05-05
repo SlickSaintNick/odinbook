@@ -39,8 +39,15 @@ module ApplicationHelper
   end
 
   def profile_image(user:, class_list: nil)
-    image = user.profile.profile_image.presence || 'profile_image_default.png'
-    image_tag(image.variant(resize_to_fill: [200, 200, { crop: :low }]), alt: user.profile.name,
-                                                                         class: class_list)
+    if user.profile.present? && user.profile.profile_image.present? && !user.profile.profile_image.nil?
+      image_tag(user.profile.profile_image.variant(resize_to_fill: [200, 200, { crop: :low }]), alt: user.profile.name,
+                                                                                                class: class_list)
+    else
+      image_tag 'profile_image_default.png', width: 200, height: 200, alt: profile_name(user:)
+    end
+  end
+
+  def profile_name(user:)
+    user.profile.present? ? user.profile.name : 'Un-named user'
   end
 end
